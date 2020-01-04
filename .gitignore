@@ -1,0 +1,6 @@
+/frontend/node_modules
+/research
+.env
+setup.md
+functional_design.md
+devlog.md
