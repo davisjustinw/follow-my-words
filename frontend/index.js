@@ -22,6 +22,7 @@ function getWords() {
   return words;
 }
 
+// Represents a word with syllable count
 class Word {
   constructor(obj) {
     this.text = obj.text;
@@ -29,6 +30,7 @@ class Word {
   }
 }
 
+// A verse line manages proper line syllables
 class Line {
   // think about getter setters here to protect vairables?
   constructor(syllableMax) {
@@ -55,6 +57,23 @@ class Line {
   }
 }
 
+class Board {
+  constructor() {
+    this.words = getWords().map(obj => new Word(obj));
+    this.stanza1 = [new Line(5), new Line(7), new Line(5)];
+    this.stanza2 = [new Line(7), new Line(7)];
+  }
+
+  flush = function() {
+    this.stanza1 = this.stanza2;
+    if(stanza1.length == 3) {
+        this.stanza2 = [new Line(7), new Line(7)];
+    } else {
+      this.stanza2 = [new Line(5), new Line(7), new Line(5)];
+    }
+  }
+  
+}
 
 function test() {
   words = getWords();
@@ -79,16 +98,17 @@ function test() {
   console.log(`drop a word by index and return correct word: ${line1.drop(1).text == 'beginning'}`);
   console.log(`line after drop shows proper count: ${line1.count == 2}`);
 
-
 }
 
 function start() {
+  test()
   console.log('loading');
-  let wordData = getWords();
-  let words = wordData.map(obj => new Word(obj));
-  let ku = new Stanza([5,7,5])
+  //build gameboard
+  board = new Board();
+
+
 
 
   console.log('starting');
 }
-window.addEventListener("DOMContentLoaded", test(), false);
+window.addEventListener("DOMContentLoaded", start(), false);
