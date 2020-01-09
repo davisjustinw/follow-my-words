@@ -55,12 +55,6 @@ class Line {
   }
 }
 
-class Stanza {
-  constructor(structure) {
-    this.lines = structure.map( count => new Line(count))
-
-  }
-}
 
 function test() {
   words = getWords();
