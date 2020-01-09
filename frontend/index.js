@@ -27,6 +27,8 @@ class Word {
   constructor(obj) {
     this.text = obj.text;
     this.count = obj.count;
+    this.el = document.createElement('li');
+    this.el.innerText = this.text;
   }
 }
 
@@ -72,7 +74,7 @@ class Board {
       this.stanza2 = [new Line(5), new Line(7), new Line(5)];
     }
   }
-  
+
 }
 
 function test() {
@@ -104,7 +106,10 @@ function start() {
   test()
   console.log('loading');
   //build gameboard
-  board = new Board();
+  let board = new Board();
+  //load Dom
+  let wordQueue = document.querySelector('#words ul');
+  board.words.forEach( word => wordQueue.appendChild(word.el) );
 
 
 
