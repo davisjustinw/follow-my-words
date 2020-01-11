@@ -28,9 +28,9 @@ class Word {
     this.id = obj.id;
     this.text = obj.text;
     this.count = obj.count;
-    this.el = document.createElement('span');
-    this.el.innerText = this.text;
-    this.el.setAttribute('id', `word${this.id}`);
+    this.element = document.createElement('span');
+    this.element.innerText = `${this.text} `;
+    this.element.setAttribute('id', `word${this.id}`);
   }
 }
 
@@ -40,14 +40,14 @@ class Line {
     this.max = syllableMax;
     this.words = [];
     this.count = 0;
-    this.el = document.createElement('p');
+    this.element = document.createElement('p');
   }
 
   add = function(word) {
     if (word.count + this.count <= this.max ) {
       this.words.push(word);
       this.count += word.count;
-      this.el.appendChild(word.el);
+      this.element.appendChild(word.element);
       return true;
     } else {
       return false;
@@ -58,29 +58,55 @@ class Line {
   drop = function(wordIndex) {
     let dropped = this.words.splice(wordIndex, 1)[0];
     this.count -= dropped.count;
-    this.el.removeChild(word.el);
+    this.element.removeChild(dropped.element);
     return dropped;
+  }
+
+}
+
+class Stanza {
+  constructor(structure, element) {
+    this.element = element;
+    this.lines = structure.map(count => {
+      let newLine = new Line(count);
+      this.element.appendChild(newLine.element);
+      return newLine;
+    });
+  }
+
+  length = function() {
+    return this.lines.length;
   }
 
 }
 
 class Board {
   constructor() {
+    this.elQueue = document.querySelector('#words ul');
+    this.elQueue.addEventListener('click', selectWord, true);
+
     this.words = getWords().reduce((words, obj) => {
       let newWord = new Word(obj);
       words[newWord.id] = newWord;
+      this.elQueue.appendChild(newWord.element);
+
       return words;
     }, {});
-    this.currentStanza = [new Line(5), new Line(7), new Line(5)];
+
+    this.elCurrentStanza = document.querySelector('#current-stanza');
+    this.currentStanza = new Stanza([5,7,5], this.elCurrentStanza);
+
+    this.elSavedStanza = document.querySelector('#saved-stanza');
+
   }
 
   saveStanza = function() {
-    this.savedStanza = this.currentStanza;
-    //POST stanza ?
-    if(savedStanza.length == 3) {
-        this.currentStanza = [new Line(7), new Line(7)];
+    this.elSavedStanza = this.currentStanza.element;
+    //POST stanza;
+    if(currentStanza.length == 3) {
+        this.currentStanza = new Stanza([7,7]);
     } else {
-      this.currentStanza = [new Line(5), new Line(7), new Line(5)];
+      this.currentStanza = new Stanza([5,7,5]);
     }
   }
 
@@ -91,7 +117,7 @@ class Board {
 function selectWord(e) {
   e.stopPropagation();
   e.currentTarget.removeChild(e.target);
-  stanza = document.querySelector('#stanza1');
+  stanza = document.querySelector('#current-stanza');
   stanza.appendChild(e.target);
 }
 
@@ -102,16 +128,6 @@ function start() {
   console.log('loading');
   //build gameboard
   let board = new Board();
-  let words = board.words;
-
-  //load Dom
-  let queue = document.querySelector('#words ul');
-  Object.keys(words).forEach( word => {
-    queue.appendChild(words[word].el)
-  });
-
-  // load parent event listener
-  wordQueue.addEventListener('click', selectWord, true);
 
   console.log('starting');
 }
