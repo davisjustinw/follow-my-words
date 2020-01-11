@@ -28,7 +28,7 @@ class Word {
     this.id = obj.id;
     this.text = obj.text;
     this.count = obj.count;
-    this.el = document.createElement('li');
+    this.el = document.createElement('span');
     this.el.innerText = this.text;
     this.el.setAttribute('id', `word${this.id}`);
   }
@@ -41,6 +41,7 @@ class Line {
     this.max = syllableMax;
     this.words = [];
     this.count = 0;
+    this.el = document.createElement('p');
   }
 
   add = function(word) {
@@ -59,6 +60,7 @@ class Line {
     this.count -= dropped.count;
     return dropped;
   }
+
 }
 
 class Board {
@@ -71,7 +73,7 @@ class Board {
     this.currentStanza = [new Line(5), new Line(7), new Line(5)];
   }
 
-  flushStanza = function() {
+  saveStanza = function() {
     this.savedStanza = this.currentStanza;
     //POST stanza ?
     if(savedStanza.length == 3) {
@@ -82,6 +84,38 @@ class Board {
   }
 
 }
+
+
+// queueListener
+function selectWord(e) {
+  e.stopPropagation();
+  e.currentTarget.removeChild(e.target);
+  stanza = document.querySelector('#stanza1');
+  stanza.appendChild(e.target);
+}
+
+// stanzaListener
+
+function start() {
+  test()
+  console.log('loading');
+  //build gameboard
+  let board = new Board();
+  let words = board.words;
+
+  //load Dom
+  let queue = document.querySelector('#words ul');
+  Object.keys(words).forEach( word => {
+    queue.appendChild(words[word].el)
+  });
+
+  // load parent event listener
+  wordQueue.addEventListener('click', selectWord, true);
+
+  console.log('starting');
+}
+
+/////***** Test Function *****/////
 
 function test() {
   words = getWords();
@@ -108,33 +142,6 @@ function test() {
 
 }
 
-function checkSyllable(){
-  //? I need to put more dom logic in the board class
-}
 
-function selectWord(e) {
-  e.stopPropagation();
-  e.currentTarget.removeChild(e.target);
-  stanza = document.querySelector('#stanza1');
-  stanza.appendChild(e.target);
-}
-
-function start() {
-  test()
-  console.log('loading');
-  //build gameboard
-  let board = new Board();
-  let words = board.words;
-
-  //load Dom
-  let wordQueue = document.querySelector('#words ul');
-  Object.keys(words).forEach( word => {
-    wordQueue.appendChild(words[word].el)
-  });
-
-  // load parent event listener
-  wordQueue.addEventListener('click', selectWord, true);
-
-  console.log('starting');
-}
+/////***** Fire up *****/////
 window.addEventListener("DOMContentLoaded", start(), false);
