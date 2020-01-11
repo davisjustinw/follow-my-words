@@ -63,7 +63,11 @@ class Line {
 
 class Board {
   constructor() {
-    this.words = getWords().map(obj => new Word(obj));
+    this.words = getWords().reduce((words, obj) => {
+      let newWord = new Word(obj);
+      words[newWord.id] = newWord;
+      return words;
+    }, {});
     this.stanza1 = [new Line(5), new Line(7), new Line(5)];
     this.stanza2 = [new Line(7), new Line(7)];
   }
@@ -117,9 +121,13 @@ function start() {
   console.log('loading');
   //build gameboard
   let board = new Board();
+  let words = board.words;
+
   //load Dom
   let wordQueue = document.querySelector('#words ul');
-  board.words.forEach( word => wordQueue.appendChild(word.el) );
+  Object.keys(words).forEach( word => {
+    wordQueue.appendChild(words[word].el)
+  });
 
   // load parent event listener
   wordQueue.addEventListener('click', selectWord, true);
