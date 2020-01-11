@@ -68,16 +68,16 @@ class Board {
       words[newWord.id] = newWord;
       return words;
     }, {});
-    this.stanza1 = [new Line(5), new Line(7), new Line(5)];
-    this.stanza2 = [new Line(7), new Line(7)];
+    this.currentStanza = [new Line(5), new Line(7), new Line(5)];
   }
 
-  flush = function() {
-    this.stanza1 = this.stanza2;
-    if(stanza1.length == 3) {
-        this.stanza2 = [new Line(7), new Line(7)];
+  flushStanza = function() {
+    this.savedStanza = this.currentStanza;
+    //POST stanza ?
+    if(savedStanza.length == 3) {
+        this.currentStanza = [new Line(7), new Line(7)];
     } else {
-      this.stanza2 = [new Line(5), new Line(7), new Line(5)];
+      this.currentStanza = [new Line(5), new Line(7), new Line(5)];
     }
   }
 
@@ -106,6 +106,10 @@ function test() {
   console.log(`drop a word by index and return correct word: ${line1.drop(1).text == 'beginning'}`);
   console.log(`line after drop shows proper count: ${line1.count == 2}`);
 
+}
+
+function checkSyllable(){
+  //? I need to put more dom logic in the board class
 }
 
 function selectWord(e) {
