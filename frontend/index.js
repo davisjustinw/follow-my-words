@@ -110,10 +110,9 @@ function test() {
 
 function selectWord(e) {
   e.stopPropagation();
-  console.log(e.target);
-  console.log(e.currentTarget);
   e.currentTarget.removeChild(e.target);
-
+  stanza = document.querySelector('#stanza1');
+  stanza.appendChild(e.target);
 }
 
 function start() {
