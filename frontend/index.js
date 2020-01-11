@@ -36,7 +36,6 @@ class Word {
 
 // A verse line manages proper line syllables
 class Line {
-  // think about getter setters here to protect vairables?
   constructor(syllableMax) {
     this.max = syllableMax;
     this.words = [];
@@ -48,6 +47,7 @@ class Line {
     if (word.count + this.count <= this.max ) {
       this.words.push(word);
       this.count += word.count;
+      this.el.appendChild(word.el);
       return true;
     } else {
       return false;
@@ -58,6 +58,7 @@ class Line {
   drop = function(wordIndex) {
     let dropped = this.words.splice(wordIndex, 1)[0];
     this.count -= dropped.count;
+    this.el.removeChild(word.el);
     return dropped;
   }
 
