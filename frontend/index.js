@@ -3,21 +3,21 @@
 function getWords() {
   console.log('getting words')
   let words = [
-    { text: 'Alice', count: 2 },
-    { text: 'was', count: 1 },
-    { text: 'beginning', count: 3 },
-    { text: 'to', count: 1 },
-    { text: 'get', count: 1 },
-    { text: 'very', count: 2 },
-    { text: 'tired', count: 1 },
-    { text: 'of', count: 1 },
-    { text: 'sitting', count: 2 },
-    { text: 'by', count: 1 },
-    { text: 'her', count: 1 },
-    { text: 'sister', count: 2 },
-    { text: 'on', count: 1 },
-    { text: 'the', count: 1 },
-    { text: 'bank', count: 1 }
+    { text: 'Alice', count: 2, id: 1 },
+    { text: 'was', count: 1, id: 2 },
+    { text: 'beginning', count: 3, id: 3 },
+    { text: 'to', count: 1, id: 4 },
+    { text: 'get', count: 1, id: 5 },
+    { text: 'very', count: 2, id: 6 },
+    { text: 'tired', count: 1, id: 7 },
+    { text: 'of', count: 1, id: 8 },
+    { text: 'sitting', count: 2, id: 9 },
+    { text: 'by', count: 1, id: 10 },
+    { text: 'her', count: 1, id: 11 },
+    { text: 'sister', count: 2, id: 12 },
+    { text: 'on', count: 1, id: 13 },
+    { text: 'the', count: 1, id: 14 },
+    { text: 'bank', count: 1, id: 15 }
   ];
   return words;
 }
@@ -25,10 +25,12 @@ function getWords() {
 // Represents a word with syllable count
 class Word {
   constructor(obj) {
+    this.id = obj.id;
     this.text = obj.text;
     this.count = obj.count;
     this.el = document.createElement('li');
     this.el.innerText = this.text;
+    this.el.setAttribute('id', `word${this.id}`);
   }
 }
 
@@ -102,6 +104,14 @@ function test() {
 
 }
 
+function selectWord(e) {
+  e.stopPropagation();
+  console.log(e.target);
+  console.log(e.currentTarget);
+  e.currentTarget.removeChild(e.target);
+
+}
+
 function start() {
   test()
   console.log('loading');
@@ -111,8 +121,8 @@ function start() {
   let wordQueue = document.querySelector('#words ul');
   board.words.forEach( word => wordQueue.appendChild(word.el) );
 
-
-
+  // load parent event listener
+  wordQueue.addEventListener('click', selectWord, true);
 
   console.log('starting');
 }
