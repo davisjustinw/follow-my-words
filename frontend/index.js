@@ -47,27 +47,31 @@ class Board {
       { max: 7, eos: false },
       { max: 7, eos: true },
     ];
-    this.legendIndex = 0;
-    this.syllableCount = 0;
+
+    this.line = { count: 0, index: 0, ...this.legend[0] };
 
     // DOM Nodes
-    this.queueNode = document.querySelector('#words ul');
-    this.savedNode = document.querySelector('#saved');
-    this.stanzaNode = document.querySelector('#stanza');
-    this.lineNode = this.stanzaNode.firstElementChild;
+    let stanza = document.querySelector('#stanza');
+    this.dom = {
+      queue: document.querySelector('#words ul'),
+      saved: document.querySelector('#saved'),
+      stanza: stanza,
+      line: stanza.firstElementChild
+    };
 
     // event listeners
     // word queue listener
-    this.queueNode.addEventListener('click', e => {
+    this.dom.queue.addEventListener('click', e => {
+      e.stopPropagation();
       console.log(`word in queue clicked: ${e.target.id}`)
       let clickedWord = this.findWord(e.target.id);
 
       // If there's room in the current line add the word
-      if (clickedWord.count + this.syllableCount <= this.currentMax) {
-        console.log(`word will fit: ${clickedWord.count} + ${this.syllableCount}`);
+      if (clickedWord.count + this.line.count <= this.line.max) {
+        console.log(`word will fit: ${clickedWord.count} + ${this.line.count}`);
         this.addWordToLineNode(clickedWord);
-        this.syllableCount += clickedWord.count;
-        console.log(`new count: ${this.syllableCount}`)
+        this.line.count += clickedWord.count;
+        console.log(`new count: ${this.line.count}`)
       } else {
         // trigger something ?
       }
@@ -80,16 +84,12 @@ class Board {
     this.words = getWords().reduce((words, obj) => {
       let newWord = new Word(obj);
       words[newWord.id] = newWord;
-      this.queueNode.appendChild(newWord.element);
+      this.dom.queue.appendChild(newWord.element);
       return words;
     }, {});
 
   }// END constructor
 
-   get currentMax() {
-    console.log(`currentMax: ${this.legend[this.legendIndex].max}`);
-    return this.legend[this.legendIndex].max
-  }
 
   findWord(id) {
     console.log(`findWord: ${id}`);
@@ -98,13 +98,33 @@ class Board {
 
   addWordToLineNode(word) {
     console.log(`addWordToLineNode: ${word.id}`);
-    console.log(this.lineNode);
-    this.lineNode.appendChild(word.element);
+    console.log(this.dom.line);
+    this.dom.line.appendChild(word.element);
     console.log(`added to line.`)
   }
 
+  addCount(word) {
+    console.log(`addCount`);
+  }
+
+  subtractCount(word){
+    console.log(`subtractCount`);
+
+  }
+
+  // setLineListener gives lexical scope for the event listener to class elements
+  // and allows line to shift
   setLineListener() {
     console.log(`setLineListener`);
+    this.dom.line.addEventListener('click', e => {
+      //find word in list
+      let dropped = this.findWord(e.target.id);
+      //remove node
+      e.currentTarget.removeChild(dropped.element);
+      //decrement count
+
+      //return word to queue
+    },true);
   }
 
   completeLine() {
