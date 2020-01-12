@@ -101,6 +101,13 @@ class Board {
     console.log(`added to line.`)
   }
 
+  addWordToQueueNode(word) {
+    console.log(`addWordToQueueNode: ${word.id}`);
+    console.log(this.dom.queue);
+    this.dom.queue.appendChild(word.element);
+    console.log(`added to queue.`)
+  }
+
   addCount(word) {
     console.log(`addCount`);
     if(this.line.count + word.count <= this.line.max) {
@@ -130,10 +137,14 @@ class Board {
       //find word in list
       let dropped = this.findWord(e.target.id);
       //remove node
-      e.currentTarget.removeChild(dropped.element);
-      //subtract count
+      if(this.subtractCount(dropped)){
+        console.log('removing node');
+        e.currentTarget.removeChild(dropped.element);
+        this.addWordToQueueNode(dropped);
+      } else {
+        //something else
+      }
 
-      //return word to queue
     },true);
   }
 
