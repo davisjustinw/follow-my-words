@@ -111,13 +111,33 @@ class Board {
     console.log('add and complete');
     this.addWord(word);
 
-    console.log('completeLine');
-    // end of stanza?
-      //yes save stanza, => move stanza children to saved
+    //line is complete
 
-    //new line => append p to stanza point line to it
-    //advance index
-    //reset line object
+    console.log('completeLine');
+    this.checkSaveStanza();
+
+    this.dom.line = document.createElement('p');
+    //need to set EventListener
+    this.dom.stanza.appendChild(this.dom.line);
+
+    let newIndex;
+    if(this.line.index != this.legend.length) {
+      newIndex = this.line.index + 1;
+    } else {
+      newIndex = 0;
+    }
+    this.line = { index: newIndex, ...this.legend[newIndex]}
+
+  }
+
+  checkSaveStanza() {
+    console.log('checkStanza');
+    console.log(`end of stanza: ${this.line.eos}`)
+    if(this.line.eos) {
+      let children = this.dom.stanza.childNodes;
+      console.log(children);
+      this.dom.saved.append(...children);
+    }
   }
 
   dropWord(word) {
@@ -131,7 +151,7 @@ class Board {
 
 
   // setLineListener gives lexical scope for the event listener to class elements
-  // and allows line to shift
+  // and allows line to shift  ** maybe bind this will clean this up
   setLineListener() {
     console.log(`setLineListener`);
     this.dom.line.addEventListener('click', e => {
