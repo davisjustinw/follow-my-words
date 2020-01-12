@@ -67,10 +67,8 @@ class Board {
       let clickedWord = this.findWord(e.target.id);
 
       // If there's room in the current line add the word
-      if (clickedWord.count + this.line.count <= this.line.max) {
-        console.log(`word will fit: ${clickedWord.count} + ${this.line.count}`);
+      if (this.addCount(clickedWord)) {
         this.addWordToLineNode(clickedWord);
-        this.line.count += clickedWord.count;
         console.log(`new count: ${this.line.count}`)
       } else {
         // trigger something ?
@@ -105,11 +103,23 @@ class Board {
 
   addCount(word) {
     console.log(`addCount`);
+    if(this.line.count + word.count <= this.line.max) {
+      console.log(`word will fit`);
+      this.line.count = this.line.count + word.count;
+      return true;
+    } else {
+      return false;
+    }
   }
 
   subtractCount(word){
     console.log(`subtractCount`);
-
+    if(this.line.count - word.count >= 0) {
+      this.line.count = this.line.count - word.count;
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // setLineListener gives lexical scope for the event listener to class elements
@@ -121,7 +131,7 @@ class Board {
       let dropped = this.findWord(e.target.id);
       //remove node
       e.currentTarget.removeChild(dropped.element);
-      //decrement count
+      //subtract count
 
       //return word to queue
     },true);
