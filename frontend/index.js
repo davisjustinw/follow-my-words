@@ -83,21 +83,23 @@ class Stanza {
 class Board {
   constructor() {
     this.elQueue = document.querySelector('#words ul');
-    this.elQueue.addEventListener('click', selectWord, true);
+    this.elCurrentStanza = document.querySelector('#current-stanza');
+    this.elSavedStanza = document.querySelector('#saved-stanza');
+
+    this.elQueue.addEventListener('click', e => {
+      e.stopPropagation();
+      e.currentTarget.removeChild(e.target);
+      this.elCurrentStanza.appendChild(e.target);
+    }, true);
 
     this.words = getWords().reduce((words, obj) => {
       let newWord = new Word(obj);
       words[newWord.id] = newWord;
       this.elQueue.appendChild(newWord.element);
-
       return words;
     }, {});
 
-    this.elCurrentStanza = document.querySelector('#current-stanza');
     this.currentStanza = new Stanza([5,7,5], this.elCurrentStanza);
-
-    this.elSavedStanza = document.querySelector('#saved-stanza');
-
   }
 
   saveStanza = function() {
@@ -113,13 +115,7 @@ class Board {
 }
 
 
-// queueListener
-function selectWord(e) {
-  e.stopPropagation();
-  e.currentTarget.removeChild(e.target);
-  stanza = document.querySelector('#current-stanza');
-  stanza.appendChild(e.target);
-}
+
 
 // stanzaListener
 
