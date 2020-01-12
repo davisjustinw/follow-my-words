@@ -115,10 +115,10 @@ class Board {
 
     console.log('completeLine');
     this.checkSaveStanza();
-
+    this.dropLineListener();
     this.dom.line = document.createElement('p');
-    //need to set EventListener
     this.dom.stanza.appendChild(this.dom.line);
+    this.setLineListener();
 
     let newIndex;
     if(this.line.index != this.legend.length) {
@@ -148,20 +148,24 @@ class Board {
     console.log(`added to queue.`)
   }
 
-
-
-  // setLineListener gives lexical scope for the event listener to class elements
-  // and allows line to shift  ** maybe bind this will clean this up
-  setLineListener() {
-    console.log(`setLineListener`);
-    this.dom.line.addEventListener('click', e => {
+  lineListener = e => {
       e.stopPropagation();
       //find word in list
       let dropped = this.findWord(e.target.id);
       //remove node
       this.dropWord(dropped);
+  }
 
-    },true);
+  // setLineListener gives lexical scope for the event listener to class elements
+  // and allows line to shift
+  setLineListener() {
+    console.log(`setLineListener`);
+    this.dom.line.addEventListener('click', this.lineListener,true);
+  }
+
+  dropLineListener() {
+    console.log('drop line listener');
+    this.dom.line.removeEventListener('click', this.lineListener,true);
   }
 
 
