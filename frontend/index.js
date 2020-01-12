@@ -24,6 +24,7 @@ function getWords() {
 
 // Represents a word with syllable count
 class Word {
+  // maybe get words static
   constructor(obj) {
     this.id = obj.id;
     this.text = obj.text;
@@ -34,9 +35,7 @@ class Word {
   }
 }
 
-function lineListener(e) {
 
-}
 
 class Board {
   constructor() {
@@ -48,41 +47,72 @@ class Board {
       { max: 7, eos: false },
       { max: 7, eos: true },
     ];
-    this.index = 0;
+    this.legendIndex = 0;
+    this.syllableCount = 0;
 
     // DOM Nodes
-    this.elQueue = document.querySelector('#words ul');
-    this.elSaved = document.querySelector('#saved');
-    this.elStanza = document.querySelector('#stanza');
-    this.elLine = this.elStanza.firstChild;
+    this.queueNode = document.querySelector('#words ul');
+    this.savedNode = document.querySelector('#saved');
+    this.stanzaNode = document.querySelector('#stanza');
+    this.lineNode = this.stanzaNode.firstElementChild;
 
     // event listeners
     // word queue listener
-    this.elQueue.addEventListener('click', e => {
+    this.queueNode.addEventListener('click', e => {
+      console.log(`word in queue clicked: ${e.target.id}`)
+      let clickedWord = this.findWord(e.target.id);
 
+      // If there's room in the current line add the word
+      if (clickedWord.count + this.syllableCount <= this.currentMax) {
+        console.log(`word will fit: ${clickedWord.count} + ${this.syllableCount}`);
+        this.addWordToLineNode(clickedWord);
+        this.syllableCount += clickedWord.count;
+        console.log(`new count: ${this.syllableCount}`)
+      } else {
+        // trigger something ?
+      }
     }, true);
 
     // current line listener
-    this.elLine.addEventListener('click', lineListener, true);
-
+    this.setLineListener();
 
     // build word hash
     this.words = getWords().reduce((words, obj) => {
       let newWord = new Word(obj);
       words[newWord.id] = newWord;
-      this.elQueue.appendChild(newWord.element);
+      this.queueNode.appendChild(newWord.element);
       return words;
     }, {});
 
   }// END constructor
 
-
-  completeLine = function() {
-
+   get currentMax() {
+    console.log(`currentMax: ${this.legend[this.legendIndex].max}`);
+    return this.legend[this.legendIndex].max
   }
 
-  saveStanza = function() {
+  findWord(id) {
+    console.log(`findWord: ${id}`);
+    return this.words[id];
+  }
 
+  addWordToLineNode(word) {
+    console.log(`addWordToLineNode: ${word.id}`);
+    console.log(this.lineNode);
+    this.lineNode.appendChild(word.element);
+    console.log(`added to line.`)
+  }
+
+  setLineListener() {
+    console.log(`setLineListener`);
+  }
+
+  completeLine() {
+    console.log(`completeLine`);
+  }
+
+  saveStanza() {
+    console.log(`saveStanza`);
   }
 
 } //END Board Class
