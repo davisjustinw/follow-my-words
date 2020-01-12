@@ -34,6 +34,9 @@ class Word {
   }
 }
 
+function lineListener(e) {
+
+}
 
 class Board {
   constructor() {
@@ -49,15 +52,21 @@ class Board {
 
     // DOM Nodes
     this.elQueue = document.querySelector('#words ul');
-    this.elSavedStanza = document.querySelector('#saved-stanza');
-    this.elCurrentStanza = document.querySelector('#current-stanza');
-    //currentLine
+    this.elSaved = document.querySelector('#saved');
+    this.elStanza = document.querySelector('#stanza');
+    this.elLine = this.elStanza.firstChild;
 
-    // Event listeners
-      // queue Listener
-      // currentLine Listener
+    // event listeners
+    // word queue listener
+    this.elQueue.addEventListener('click', e => {
 
-    // Build Word hash
+    }, true);
+
+    // current line listener
+    this.elLine.addEventListener('click', lineListener, true);
+
+
+    // build word hash
     this.words = getWords().reduce((words, obj) => {
       let newWord = new Word(obj);
       words[newWord.id] = newWord;
@@ -67,7 +76,8 @@ class Board {
 
   }// END constructor
 
-  finishLine = function() {
+
+  completeLine = function() {
 
   }
 
