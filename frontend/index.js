@@ -24,7 +24,6 @@ function getWords() {
 
 // Represents a word with syllable count
 class Word {
-  // maybe get words static
   constructor(obj) {
     this.id = obj.id;
     this.text = obj.text;
@@ -49,7 +48,6 @@ class Board {
     this.line = { index: 0, ...this.legend[0] };
 
     // DOM Nodes
-    this.stanza = document.querySelector('#stanza');
     this.dom = {
       queue: document.querySelector('#words ul'),
       saved: document.querySelector('#saved'),
@@ -64,7 +62,7 @@ class Board {
       console.log(`word in queue clicked: ${e.target.id}`)
       console.log(this.dom.line);
       let clickedWord = this.findWord(e.target.id);
-      this.checkAndAddWord(clickedWord);
+      clickedWord && this.checkAndAddWord(clickedWord);
     }, true);
 
     // current line listener
@@ -153,7 +151,7 @@ class Board {
       //find word in list
       let dropped = this.findWord(e.target.id);
       //remove node
-      this.dropWord(dropped);
+      dropped && this.dropWord(dropped);
   }
 
   // setLineListener gives lexical scope for the event listener to class elements
