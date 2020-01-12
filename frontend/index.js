@@ -134,12 +134,12 @@ class Board {
   setLineListener() {
     console.log(`setLineListener`);
     this.dom.line.addEventListener('click', e => {
+      e.stopPropagation();
       //find word in list
       let dropped = this.findWord(e.target.id);
       //remove node
       if(this.subtractCount(dropped)){
-        console.log('removing node');
-        e.currentTarget.removeChild(dropped.element);
+        console.log('moving node');
         this.addWordToQueueNode(dropped);
       } else {
         //something else
