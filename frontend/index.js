@@ -35,28 +35,26 @@ class Word {
   }
 }
 
-
-
 class Board {
   constructor() {
     // Stanza structure
     this.legend = [
-      { max: 5, eos: false },
-      { max: 7, eos: false },
-      { max: 5, eos: true },
-      { max: 7, eos: false },
-      { max: 7, eos: true },
+      { count: 5, eos: false },
+      { count: 7, eos: false },
+      { count: 5, eos: true },
+      { count: 7, eos: false },
+      { count: 7, eos: true },
     ];
 
-    this.line = { count: 0, index: 0, ...this.legend[0] };
+    this.line = { index: 0, ...this.legend[0] };
 
     // DOM Nodes
-    let stanza = document.querySelector('#stanza');
+    this.stanza = document.querySelector('#stanza');
     this.dom = {
       queue: document.querySelector('#words ul'),
       saved: document.querySelector('#saved'),
-      stanza: stanza,
-      line: stanza.firstElementChild
+      stanza: document.querySelector('#stanza'),
+      line: document.querySelector('#stanza').firstElementChild
     };
 
     // event listeners
@@ -64,15 +62,9 @@ class Board {
     this.dom.queue.addEventListener('click', e => {
       e.stopPropagation();
       console.log(`word in queue clicked: ${e.target.id}`)
+      console.log(this.dom.line);
       let clickedWord = this.findWord(e.target.id);
-
-      // If there's room in the current line add the word
-      if (this.addCount(clickedWord)) {
-        this.addWordToLineNode(clickedWord);
-        console.log(`new count: ${this.line.count}`)
-      } else {
-        // trigger something ?
-      }
+      this.checkAndAddWord(clickedWord);
     }, true);
 
     // current line listener
@@ -94,40 +86,49 @@ class Board {
     return this.words[id];
   }
 
-  addWordToLineNode(word) {
-    console.log(`addWordToLineNode: ${word.id}`);
-    console.log(this.dom.line);
-    this.dom.line.appendChild(word.element);
-    console.log(`added to line.`)
+  checkAndAddWord(word) {
+    let check = Math.sign(this.line.count - word.count);
+    console.log(`checking: ${this.line.count} - ${word.count}`);
+    return {
+      '1': this.addWord,
+      '0': this.addWordNewLine,
+      '-1': this.reject
+    }[check].bind(this)(word);
   }
 
-  addWordToQueueNode(word) {
+  reject() {
+    console.log('rejected');
+  }
+
+  addWord(word) {
+    console.log(`addWord: ${word.id}`);
+    this.line.count -= word.count;
+    this.dom.line.appendChild(word.element);
+    console.log(`added to line.`);
+  }
+
+  addWordNewLine(word) {
+    console.log('add and complete');
+    this.addWord(word);
+
+    console.log('completeLine');
+    // end of stanza?
+      //yes save stanza, => move stanza children to saved
+
+    //new line => append p to stanza point line to it
+    //advance index
+    //reset line object
+  }
+
+  dropWord(word) {
     console.log(`addWordToQueueNode: ${word.id}`);
     console.log(this.dom.queue);
     this.dom.queue.appendChild(word.element);
+    this.line.count += word.count;
     console.log(`added to queue.`)
   }
 
-  addCount(word) {
-    console.log(`addCount`);
-    if(this.line.count + word.count <= this.line.max) {
-      console.log(`word will fit`);
-      this.line.count = this.line.count + word.count;
-      return true;
-    } else {
-      return false;
-    }
-  }
 
-  subtractCount(word){
-    console.log(`subtractCount`);
-    if(this.line.count - word.count >= 0) {
-      this.line.count = this.line.count - word.count;
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   // setLineListener gives lexical scope for the event listener to class elements
   // and allows line to shift
@@ -138,23 +139,11 @@ class Board {
       //find word in list
       let dropped = this.findWord(e.target.id);
       //remove node
-      if(this.subtractCount(dropped)){
-        console.log('moving node');
-        this.addWordToQueueNode(dropped);
-      } else {
-        //something else
-      }
+      this.dropWord(dropped);
 
     },true);
   }
 
-  completeLine() {
-    console.log(`completeLine`);
-  }
-
-  saveStanza() {
-    console.log(`saveStanza`);
-  }
 
 } //END Board Class
 
