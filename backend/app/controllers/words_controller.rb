@@ -1,8 +1,8 @@
 class WordsController < ApplicationController
   def index
-    count = 10
-    count = params[:count].to_i if params[:count]
-    words = Word.limit(count)
+    limit = 10
+    limit = params[:limit].to_i if params[:limit]
+    words = Word.limit(limit)
     render json: words, only: [:id, :text, :count]
   end
 end

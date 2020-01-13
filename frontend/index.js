@@ -1,5 +1,9 @@
 
 // getWords will fetch words from the API
+function fetchWords() {
+  fetch('http://127.0.0.1:3000/words').then(response => response.json()).then(json => console.log(json))
+}
+
 function getWords() {
   console.log('getting words')
   let words = [
