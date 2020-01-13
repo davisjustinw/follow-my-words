@@ -4,3 +4,20 @@
 setup.md
 functional_design.md
 devlog.md
+
+# Ignore bundler config.
+/backend/.bundle
+
+# Ignore all logfiles and tempfiles.
+/backend/log/*
+/backend/tmp/*
+!/backend/log/.keep
+!/backend/tmp/.keep
+
+# Ignore uploaded files in development.
+/backend/storage/*
+!/backend/storage/.keep
+/backend/.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+/backend/config/master.key
