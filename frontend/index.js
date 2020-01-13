@@ -17,7 +17,22 @@ function getWords() {
     { text: 'sister', count: 2, id: 'word-12' },
     { text: 'on', count: 1, id: 'word-13' },
     { text: 'the', count: 1, id: 'word-14' },
-    { text: 'bank', count: 1, id: 'word-15' }
+    { text: 'bank', count: 1, id: 'word-15' },
+    { text: 'Alice', count: 2, id: 'word-16' },
+    { text: 'was', count: 1, id: 'word-17' },
+    { text: 'beginning', count: 3, id: 'word-18' },
+    { text: 'to', count: 1, id: 'word-19' },
+    { text: 'get', count: 1, id: 'word-20' },
+    { text: 'very', count: 2, id: 'word-21' },
+    { text: 'tired', count: 1, id: 'word-22' },
+    { text: 'of', count: 1, id: 'word-23' },
+    { text: 'sitting', count: 2, id: 'word-24' },
+    { text: 'by', count: 1, id: 'word-25' },
+    { text: 'her', count: 1, id: 'word-26' },
+    { text: 'sister', count: 2, id: 'word-27' },
+    { text: 'on', count: 1, id: 'word-28' },
+    { text: 'the', count: 1, id: 'word-29' },
+    { text: 'bank', count: 1, id: 'word-30' }
   ];
   return words;
 }
@@ -34,6 +49,27 @@ class Word {
   }
 }
 
+class Queue {
+  constructor() {
+    this.data = [];
+    this.min = 10;
+    this.getData();
+  }
+
+  getWords(count) {
+    if(count < this.data.length && this.data.length > this.min) {
+      return this.data.splice(0,count);
+    } else {
+      this.getData();
+      return this.getWords(count);
+    }
+  }
+  //API Call
+  getData() {
+    this.data = [...this.data, ...getWords()];
+  }
+}
+
 class Board {
   constructor() {
     // Stanza structure
@@ -46,6 +82,7 @@ class Board {
     ];
 
     this.line = { index: 0, ...this.legend[0] };
+    this.words = {};
 
     // DOM Nodes
     this.dom = {
@@ -69,15 +106,21 @@ class Board {
     this.setLineListener();
 
     // build word hash
-    this.words = getWords().reduce((words, obj) => {
+    this.queue = new Queue();
+    this.loadWords(15);
+
+  }// END constructor
+
+  loadWords(count) {
+    console.log('loadWords');
+    console.log(this.words);
+    this.words = this.queue.getWords(count).reduce((words, obj) => {
       let newWord = new Word(obj);
       words[newWord.id] = newWord;
       this.dom.queue.appendChild(newWord.element);
       return words;
-    }, {});
-
-  }// END constructor
-
+    }, this.words)
+  }
 
   findWord(id) {
     console.log(`findWord: ${id}`);
@@ -108,9 +151,8 @@ class Board {
   addWordNewLine(word) {
     console.log('add and complete');
     this.addWord(word);
-
+    this.loadWords(this.legend[this.line.index].count);
     //line is complete
-
     console.log('completeLine');
     this.checkSaveStanza();
     this.dropLineListener();
