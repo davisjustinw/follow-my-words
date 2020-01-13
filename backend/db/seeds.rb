@@ -1,7 +1,34 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+seed_words = [
+  { text: 'Alice', count: 2 },
+  { text: 'was', count: 1 },
+  { text: 'beginning', count: 3 },
+  { text: 'to', count: 1 },
+  { text: 'get', count: 1 },
+  { text: 'very', count: 2 },
+  { text: 'tired', count: 1 },
+  { text: 'of', count: 1 },
+  { text: 'sitting', count: 2 },
+  { text: 'by', count: 1 },
+  { text: 'her', count: 1 },
+  { text: 'sister', count: 2 },
+  { text: 'on', count: 1 },
+  { text: 'the', count: 1 },
+  { text: 'bank', count: 1 },
+  { text: 'Alice', count: 2 },
+  { text: 'was', count: 1 },
+  { text: 'beginning', count: 3 },
+  { text: 'to', count: 1 },
+  { text: 'get', count: 1 },
+  { text: 'very', count: 2 },
+  { text: 'tired', count: 1 },
+  { text: 'of', count: 1 },
+  { text: 'sitting', count: 2 },
+  { text: 'by', count: 1 },
+  { text: 'her', count: 1 },
+  { text: 'sister', count: 2 },
+  { text: 'on', count: 1 },
+  { text: 'the', count: 1 },
+  { text: 'bank', count: 1 }
+]
+
+seed_words.each {|word| Word.create(word)}
