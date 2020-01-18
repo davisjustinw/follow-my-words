@@ -22,7 +22,7 @@ class Queue {
     return this.data.length;
   }
 
-  getWords(count) {
+  addWords(count) {
     for(let i = 0; i < count; i++){
       let random = Math.floor(Math.random() * this.data.length);
       let word = new Word(this.data[random]);
@@ -51,7 +51,7 @@ class Queue {
       .then(json => {
         console.log('fetched');
         this.data = [...this.data, ...json];
-        this.getWords(10);
+        this.addWords(10);
       });
   }
 }
@@ -101,9 +101,8 @@ class Board {
 
   checkAndAddWord(word) {
 
-    let check = Math.sign(this.line.count - word.count);
-    console.log(`checking: ${this.line.count} - ${word.count}`);
-    console.log(word);
+    let check = Math.sign(this.line.count - word.syllable_count);
+    console.log(`checking: ${this.line.count} - ${word.syllable_count}`);
     return {
       '1': this.addWord,
       '0': this.addWordNewLine,
@@ -117,7 +116,7 @@ class Board {
 
   addWord(word) {
     console.log(`addWord: ${word.id}`);
-    this.line.count -= word.count;
+    this.line.count -= word.syllable_count;
     this.dom.line.appendChild(word.element);
     console.log(`added to line.`);
   }
@@ -125,7 +124,7 @@ class Board {
   addWordNewLine(word) {
     console.log('add and complete');
     this.addWord(word);
-    this.loadWords(this.legend[this.line.index].count);
+    this.queue.addWords(this.legend[this.line.index].count);
     //line is complete
     console.log('completeLine');
     this.checkSaveStanza();
@@ -158,7 +157,7 @@ class Board {
     console.log(`addWordToQueueNode: ${word.id}`);
     console.log(this.dom.queue);
     this.dom.queue.appendChild(word.element);
-    this.line.count += word.count;
+    this.line.count += word.syllable_count;
     console.log(`added to queue.`)
   }
 
