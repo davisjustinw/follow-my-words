@@ -51,7 +51,7 @@ class Queue {
       .then(json => {
         console.log('fetched');
         this.data = [...this.data, ...json];
-        this.addWords(10);
+        this.addWords(50);
       });
   }
 }
@@ -68,15 +68,16 @@ class Board {
     ];
 
     this.line = { index: 0, ...this.legend[0] };
-    //this.words = {};
 
     // DOM Nodes
     this.dom = {
       queue: document.querySelector('#words ul'),
       saved: document.querySelector('#saved'),
       stanza: document.querySelector('#stanza'),
-      line: document.querySelector('#stanza').firstElementChild
+      line: document.querySelector('#stanza p'),
+      lineCounter: document.querySelector('#stanza p span')
     };
+    this.dom.lineCounter.innerText = `${this.line.count}: `;
 
     // event listeners
     // word queue listener
@@ -85,6 +86,8 @@ class Board {
       console.log(`word in queue clicked: ${e.target.id}`)
       console.log(this.dom.line);
       let clickedWord = this.queue.findWord(e.target.id);
+
+      //the target wasn't always legit this checks for that
       clickedWord && this.checkAndAddWord(clickedWord);
     }, true);
 
@@ -97,10 +100,7 @@ class Board {
 
   }// END constructor
 
-
-
   checkAndAddWord(word) {
-
     let check = Math.sign(this.line.count - word.syllable_count);
     console.log(`checking: ${this.line.count} - ${word.syllable_count}`);
     return {
@@ -108,6 +108,7 @@ class Board {
       '0': this.addWordNewLine,
       '-1': this.reject
     }[check].bind(this)(word);
+    //bind here passes the class context to the lookup object
   }
 
   reject() {
@@ -118,6 +119,7 @@ class Board {
     console.log(`addWord: ${word.id}`);
     this.line.count -= word.syllable_count;
     this.dom.line.appendChild(word.element);
+    this.dom.lineCounter.innerText = `${this.line.count}: `
     console.log(`added to line.`);
   }
 
@@ -125,11 +127,15 @@ class Board {
     console.log('add and complete');
     this.addWord(word);
     this.queue.addWords(this.legend[this.line.index].count);
-    //line is complete
-    console.log('completeLine');
+    console.log('completed line');
+
     this.checkSaveStanza();
     this.dropLineListener();
+
     this.dom.line = document.createElement('p');
+    this.dom.lineCounter = document.createElement('span')
+
+    this.dom.line.appendChild(this.dom.lineCounter);
     this.dom.stanza.appendChild(this.dom.line);
     this.setLineListener();
 
@@ -140,7 +146,7 @@ class Board {
       newIndex = 0;
     }
     this.line = { index: newIndex, ...this.legend[newIndex]}
-
+    this.dom.lineCounter.innerText = `${this.line.count}: `;
   }
 
   checkSaveStanza() {
@@ -158,6 +164,7 @@ class Board {
     console.log(this.dom.queue);
     this.dom.queue.appendChild(word.element);
     this.line.count += word.syllable_count;
+    this.dom.lineCounter.innerText = `${this.line.count}: `
     console.log(`added to queue.`)
   }
 
@@ -181,9 +188,7 @@ class Board {
     this.dom.line.removeEventListener('click', this.lineListener,true);
   }
 
-
 } //END Board Class
-
 
 /////***** Fire up *****/////
 function start() {
