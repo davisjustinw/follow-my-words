@@ -1,34 +1,21 @@
-seed_words = [
-  { text: 'Alice', count: 2 },
-  { text: 'was', count: 1 },
-  { text: 'beginning', count: 3 },
-  { text: 'to', count: 1 },
-  { text: 'get', count: 1 },
-  { text: 'very', count: 2 },
-  { text: 'tired', count: 1 },
-  { text: 'of', count: 1 },
-  { text: 'sitting', count: 2 },
-  { text: 'by', count: 1 },
-  { text: 'her', count: 1 },
-  { text: 'sister', count: 2 },
-  { text: 'on', count: 1 },
-  { text: 'the', count: 1 },
-  { text: 'bank', count: 1 },
-  { text: 'Alice', count: 2 },
-  { text: 'was', count: 1 },
-  { text: 'beginning', count: 3 },
-  { text: 'to', count: 1 },
-  { text: 'get', count: 1 },
-  { text: 'very', count: 2 },
-  { text: 'tired', count: 1 },
-  { text: 'of', count: 1 },
-  { text: 'sitting', count: 2 },
-  { text: 'by', count: 1 },
-  { text: 'her', count: 1 },
-  { text: 'sister', count: 2 },
-  { text: 'on', count: 1 },
-  { text: 'the', count: 1 },
-  { text: 'bank', count: 1 }
-]
 
-seed_words.each {|word| Word.create(word)}
+file = File.open('./lib/Alice_short.txt')
+data = file.read
+file.close
+words = data.scan(/\w+/)
+
+book = Book.create(
+  title: "Alice's Adventures in Wonderland",
+  author: "Lewis Carroll"
+)
+
+words.each do |word|
+  newWord = book.words.find_or_initialize_by(
+    text: word.downcase,
+    syllable_count: Word.count_syllables(word)
+  )
+
+  newWord.count_up if newWord.persisted?
+  puts "#{newWord.text}: #{newWord.count}"
+  newWord.save
+end

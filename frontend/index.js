@@ -1,52 +1,10 @@
 
-// getWords will fetch words from the API
-function fetchWords() {
-  fetch('http://127.0.0.1:3000/words').then(response => response.json()).then(json => console.log(json))
-}
-
-function getWords() {
-  console.log('getting words')
-  let words = [
-    { text: 'Alice', count: 2, id: 'word-1' },
-    { text: 'was', count: 1, id: 'word-2' },
-    { text: 'beginning', count: 3, id: 'word-3' },
-    { text: 'to', count: 1, id: 'word-4' },
-    { text: 'get', count: 1, id: 'word-5' },
-    { text: 'very', count: 2, id: 'word-6' },
-    { text: 'tired', count: 1, id: 'word-7' },
-    { text: 'of', count: 1, id: 'word-8' },
-    { text: 'sitting', count: 2, id: 'word-9' },
-    { text: 'by', count: 1, id: 'word-10' },
-    { text: 'her', count: 1, id: 'word-11' },
-    { text: 'sister', count: 2, id: 'word-12' },
-    { text: 'on', count: 1, id: 'word-13' },
-    { text: 'the', count: 1, id: 'word-14' },
-    { text: 'bank', count: 1, id: 'word-15' },
-    { text: 'Alice', count: 2, id: 'word-16' },
-    { text: 'was', count: 1, id: 'word-17' },
-    { text: 'beginning', count: 3, id: 'word-18' },
-    { text: 'to', count: 1, id: 'word-19' },
-    { text: 'get', count: 1, id: 'word-20' },
-    { text: 'very', count: 2, id: 'word-21' },
-    { text: 'tired', count: 1, id: 'word-22' },
-    { text: 'of', count: 1, id: 'word-23' },
-    { text: 'sitting', count: 2, id: 'word-24' },
-    { text: 'by', count: 1, id: 'word-25' },
-    { text: 'her', count: 1, id: 'word-26' },
-    { text: 'sister', count: 2, id: 'word-27' },
-    { text: 'on', count: 1, id: 'word-28' },
-    { text: 'the', count: 1, id: 'word-29' },
-    { text: 'bank', count: 1, id: 'word-30' }
-  ];
-  return words;
-}
-
 // Represents a word with syllable count
 class Word {
   constructor(obj) {
-    this.id = obj.id;
+    this.id = `${obj.id}-${obj.count}`;
     this.text = obj.text;
-    this.count = obj.count;
+    this.syllable_count = obj.syllable_count;
     this.element = document.createElement('span');
     this.element.innerText = `${this.text} `;
     this.element.setAttribute('id', this.id);
@@ -54,23 +12,42 @@ class Word {
 }
 
 class Queue {
-  constructor() {
+  constructor(dom) {
     this.data = [];
-    this.min = 10;
-    this.getData();
+    this.words = {};
+    this.dom = dom;
+  }
+
+  get length() {
+    return this.data.length;
   }
 
   getWords(count) {
-    if(count < this.data.length && this.data.length > this.min) {
-      return this.data.splice(0,count);
-    } else {
-      this.getData();
-      return this.getWords(count);
+    for(let i = 0; i < count; i++){
+      let random = Math.floor(Math.random() * this.data.length);
+      let word = new Word(this.data[random]);
+
+      words[word.id] = word;
+      this.dom.appendChild(word.element);
+
+      if(this.data[random].count > 0) {
+        this.data[random].count = this.data[random].count - 1;
+      } else {
+        this.data.splice(random, 1);
+      }
     }
+    return words;
   }
   //API Call
-  getData() {
-    this.data = [...this.data, ...getWords()];
+  fetchData() {
+    console.log('fetching words')
+    fetch('http://127.0.0.1:3000/books/1/words')
+      .then(response => response.json())
+      .then(json => {
+        console.log('fetched');
+        this.data = [...this.data, ...json];
+        this.getWords(10);
+      });
   }
 }
 
@@ -110,21 +87,10 @@ class Board {
     this.setLineListener();
 
     // build word hash
-    this.queue = new Queue();
-    this.loadWords(15);
+    this.queue = new Queue(this.dom.queue);
+    this.queue.fetchData();
 
   }// END constructor
-
-  loadWords(count) {
-    console.log('loadWords');
-    console.log(this.words);
-    this.words = this.queue.getWords(count).reduce((words, obj) => {
-      let newWord = new Word(obj);
-      words[newWord.id] = newWord;
-      this.dom.queue.appendChild(newWord.element);
-      return words;
-    }, this.words)
-  }
 
   findWord(id) {
     console.log(`findWord: ${id}`);
