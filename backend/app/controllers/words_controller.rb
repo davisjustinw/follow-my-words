@@ -4,6 +4,6 @@ class WordsController < ApplicationController
     #limit = params[:limit].to_i if params[:limit]
     #words = Word.limit(limit)
     words = Word.all
-    render json: words, only: [:id, :text, :count]
+    render json: words, only: [:id, :text, :count, :syllable_count]
   end
 end

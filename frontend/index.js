@@ -27,7 +27,7 @@ class Queue {
       let random = Math.floor(Math.random() * this.data.length);
       let word = new Word(this.data[random]);
 
-      words[word.id] = word;
+      this.words[word.id] = word;
       this.dom.appendChild(word.element);
 
       if(this.data[random].count > 0) {
@@ -37,6 +37,11 @@ class Queue {
       }
     }
     return words;
+  }
+
+  findWord(id) {
+    console.log(`findWord: ${id}`);
+    return this.words[id];
   }
   //API Call
   fetchData() {
@@ -63,7 +68,7 @@ class Board {
     ];
 
     this.line = { index: 0, ...this.legend[0] };
-    this.words = {};
+    //this.words = {};
 
     // DOM Nodes
     this.dom = {
@@ -79,7 +84,7 @@ class Board {
       e.stopPropagation();
       console.log(`word in queue clicked: ${e.target.id}`)
       console.log(this.dom.line);
-      let clickedWord = this.findWord(e.target.id);
+      let clickedWord = this.queue.findWord(e.target.id);
       clickedWord && this.checkAndAddWord(clickedWord);
     }, true);
 
@@ -92,14 +97,13 @@ class Board {
 
   }// END constructor
 
-  findWord(id) {
-    console.log(`findWord: ${id}`);
-    return this.words[id];
-  }
+
 
   checkAndAddWord(word) {
+
     let check = Math.sign(this.line.count - word.count);
     console.log(`checking: ${this.line.count} - ${word.count}`);
+    console.log(word);
     return {
       '1': this.addWord,
       '0': this.addWordNewLine,
@@ -161,7 +165,7 @@ class Board {
   lineListener = e => {
       e.stopPropagation();
       //find word in list
-      let dropped = this.findWord(e.target.id);
+      let dropped = this.queue.findWord(e.target.id);
       //remove node
       dropped && this.dropWord(dropped);
   }
