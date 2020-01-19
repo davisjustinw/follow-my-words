@@ -1,0 +1,6 @@
+#gameboard {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: none;
+  }
