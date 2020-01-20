@@ -13,13 +13,27 @@ class Board {
 
     // DOM Nodes
     this.dom = {
+      board: document.querySelector('#gameboard'),
       queue: document.querySelector('#words ul'),
       saved: document.querySelector('#saved'),
       stanza: document.querySelector('#stanza'),
       line: document.querySelector('#stanza p'),
       lineCounter: document.querySelector('#stanza p span')
     };
+
     this.dom.lineCounter.innerText = `${this.line.count}: `;
+
+    // could be done in css but useful to make accessible?
+    this.dom.board.style.display = "block";
+
+    //browser dimensions;
+    this.size = {
+      height: document.documentElement.clientHeight,
+      width: document.documentElement.clientWidth
+    };
+
+    //for browser size reset;
+    this.resetPosition = false;
 
     // event listeners
     // word queue listener
@@ -127,6 +141,15 @@ class Board {
   dropLineListener() {
     console.log('drop line listener');
     this.dom.line.removeEventListener('click', this.lineListener,true);
+  }
+
+  moveWords() {
+    for (const word in this.queue.words) {
+      console.log('moveWords')
+      this.queue.words[word].update(this.size);
+    }
+
+    requestAnimationFrame(this.moveWords.bind(this));
   }
 
 } //END Board Class

@@ -3,6 +3,7 @@ class Queue {
     this.data = [];
     this.words = {};
     this.dom = dom;
+    this.numberOfWords = 20
   }
 
   get length() {
@@ -38,7 +39,7 @@ class Queue {
       .then(json => {
         console.log('fetched');
         this.data = [...this.data, ...json];
-        this.addWords(50);
+        this.addWords(this.numberOfWords);
       });
   }
 }
