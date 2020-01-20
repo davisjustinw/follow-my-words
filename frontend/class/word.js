@@ -7,7 +7,7 @@ class Word {
 
     // dom variables
     this.element = document.createElement('span');
-    this.element.innerText = `${this.text} `;
+    this.element.innerText = this.text;
     this.element.setAttribute('id', this.id);
     this.element.setAttribute('class', 'sakura');
 

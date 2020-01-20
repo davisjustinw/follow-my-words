@@ -4,7 +4,7 @@ class Queue {
     this.words = {};
     this.verseWords = {};
     this.dom = dom;
-    this.numberOfWords = 2;
+    this.numberOfWords = 10;
     this.board = board;
   }
 

@@ -21,7 +21,8 @@ class Board {
       lineCounter: document.querySelector('#stanza p span')
     };
 
-    this.dom.lineCounter.innerText = `${this.line.count}: `;
+    this.dom.lineCounter.innerText = `${this.line.count}:`;
+    this.dom.lineCounter.className = 'sakura inStanza';
 
     // could be done in css but useful to make accessible?
     this.dom.board.style.display = "block";
@@ -81,7 +82,8 @@ class Board {
     this.line.count -= word.syllable_count;
     this.dom.line.appendChild(word.element);
     this.queue.moveWordToVerse(word);
-    this.dom.lineCounter.innerText = `${this.line.count}: `
+    this.dom.lineCounter.innerText = this.line.count;
+    word.element.className = 'sakura inStanza';
     console.log(`added to line.`);
   }
 
@@ -109,7 +111,8 @@ class Board {
       newIndex = 0;
     }
     this.line = { index: newIndex, ...this.legend[newIndex]}
-    this.dom.lineCounter.innerText = `${this.line.count}: `;
+    this.dom.lineCounter.innerText = this.line.count;
+    this.dom.lineCounter.className = 'sakura inStanza';
   }
 
   checkSaveStanza() {
@@ -127,7 +130,8 @@ class Board {
     this.dom.queue.appendChild(word.element);
     this.queue.moveWordToQueue(word);
     this.line.count += word.syllable_count;
-    this.dom.lineCounter.innerText = `${this.line.count}: `
+    this.dom.lineCounter.innerText = this.line.count;
+    word.element.className = 'sakura';
     console.log(`added to queue.`)
   }
 
@@ -159,7 +163,6 @@ class Board {
     }
 
     if (this.resetPosition) {
-
       this.size = {
         height: document.documentElement.clientHeight,
         width: document.documentElement.clientWidth

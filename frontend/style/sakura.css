@@ -4,6 +4,12 @@
     z-index: 1000;
     font-size: 48px;
     color: hsl(330, 65%, 80%);
+    padding: 10px;
+  }
+
+  .inStanza {
+    position: static;
+    display: inline;
   }
 
   header {

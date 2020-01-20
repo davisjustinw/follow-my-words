@@ -8,3 +8,12 @@ html {
     top: 0px;
     display: none;
 }
+
+#stanzas {
+  width: 100%;
+  font-size: 48px;
+  color: hsl(330, 65%, 80%);
+  position: absolute;
+  left: 100px;
+  top: 100px;
+}
