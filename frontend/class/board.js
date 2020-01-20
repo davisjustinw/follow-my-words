@@ -94,8 +94,10 @@ class Board {
     this.queue.addWords(this.legend[this.line.index].count, 50, this.size);
     console.log('completed line');
 
+    this.dom.line.removeChild(this.dom.lineCounter);
     this.checkSaveStanza();
     this.dropLineListener();
+
 
     this.dom.line = document.createElement('p');
     this.dom.lineCounter = document.createElement('span')
@@ -118,6 +120,7 @@ class Board {
   checkSaveStanza() {
     console.log('checkStanza');
     console.log(`end of stanza: ${this.line.eos}`)
+
     if(this.line.eos) {
       let children = this.dom.stanza.childNodes;
       this.dom.saved.append(...children);
