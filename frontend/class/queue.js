@@ -46,6 +46,11 @@ class Queue {
     console.log(`findWord: ${id}`);
     return this.words[id];
   }
+
+  findVerseWord(id) {
+    console.log(`findVerseWord: ${id}`);
+    return this.verseWords[id];
+  }
   //API Call
   fetchData() {
     console.log('fetching words')

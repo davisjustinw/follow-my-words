@@ -125,6 +125,7 @@ class Board {
     console.log(`addWordToQueueNode: ${word.id}`);
     console.log(this.dom.queue);
     this.dom.queue.appendChild(word.element);
+    this.queue.moveWordToQueue(word);
     this.line.count += word.syllable_count;
     this.dom.lineCounter.innerText = `${this.line.count}: `
     console.log(`added to queue.`)
@@ -133,7 +134,9 @@ class Board {
   lineListener = e => {
       e.stopPropagation();
       //find word in list
-      let dropped = this.queue.findWord(e.target.id);
+      console.log('line word clicked');
+      let dropped = this.queue.findVerseWord(e.target.id);
+      console.log(`dropped: ${dropped.id}`);
       //remove node
       dropped && this.dropWord(dropped);
   }
