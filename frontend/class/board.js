@@ -21,7 +21,7 @@ class Board {
       lineCounter: document.querySelector('#stanza p span')
     };
 
-    this.dom.lineCounter.innerText = `${this.line.count}:`;
+    this.dom.lineCounter.innerText = this.line.count;
     this.dom.lineCounter.className = 'sakura inStanza';
 
     // could be done in css but useful to make accessible?
@@ -80,7 +80,7 @@ class Board {
   addWord(word) {
     console.log(`addWord: ${word.id}`);
     this.line.count -= word.syllable_count;
-    this.dom.line.appendChild(word.element);
+    this.dom.line.insertBefore(word.element, this.dom.lineCounter);
     this.queue.moveWordToVerse(word);
     this.dom.lineCounter.innerText = this.line.count;
     word.element.className = 'sakura inStanza';
