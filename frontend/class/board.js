@@ -51,7 +51,7 @@ class Board {
     this.setLineListener();
 
     // build word hash
-    this.queue = new Queue(this.dom.queue);
+    this.queue = new Queue(this.dom.queue, this);
     this.queue.fetchData();
 
   }// END constructor
@@ -82,7 +82,8 @@ class Board {
   addWordNewLine(word) {
     console.log('add and complete');
     this.addWord(word);
-    this.queue.addWords(this.legend[this.line.index].count);
+    console.log(`before addWords: ${this.size}`)
+    this.queue.addWords(this.legend[this.line.index].count, 50, this.size);
     console.log('completed line');
 
     this.checkSaveStanza();

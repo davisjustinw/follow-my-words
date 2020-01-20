@@ -15,14 +15,17 @@ class Word {
     this.speed = 5 + Math.random() * 40;
 
     this.position = {x: null, y: null};
+
+    console.log(`before setPosition. offset ${offset}, size ${size}`);
     this.setPosition(offset, size);
     this.scale = 1;
-
+    console.log(`${this.id}: start position ${this.position.x}, ${this.position.y}`);
     // motion
     this.counter = 0;
     this.sign = Math.random() < 0.5 ? 1 : -1;
 
     // initial opacity
+    // might need to do this with setAttribute
     this.element.style.opacity = (.1 + Math.random()) / 3;
   }
 
@@ -52,8 +55,10 @@ class Word {
     return Math.round(-1 * offset + Math.random() * (size + 2 * offset));
   }
   setPosition(offset, size) {
-    this.position.x = this.calculatePosition(offset, size);
-    this.position.y = this.calculatePosition(offset, size);
+    console.log(`setPosition. offset ${offset}, size ${size}`);
+
+    this.position.x = this.calculatePosition(offset, size.width);
+    this.position.y = this.calculatePosition(offset, size.height);
   }
 
   setTransform() {

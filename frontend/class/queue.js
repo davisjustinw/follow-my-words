@@ -1,19 +1,23 @@
 class Queue {
-  constructor(dom) {
+  constructor(dom, board) {
     this.data = [];
     this.words = {};
     this.dom = dom;
-    this.numberOfWords = 20
+    this.numberOfWords = 20;
+    this.board = board;
   }
 
   get length() {
     return this.data.length;
   }
 
-  addWords(count) {
+  addWords(count, offset, size) {
+    console.log(`addWords: offset: ${offset}, size: ${size}`);
     for(let i = 0; i < count; i++){
       let random = Math.floor(Math.random() * this.data.length);
-      let word = new Word(this.data[random]);
+
+      // need offset and size
+      let word = new Word(this.data[random], offset, size);
 
       this.words[word.id] = word;
       this.dom.appendChild(word.element);
@@ -39,7 +43,7 @@ class Queue {
       .then(json => {
         console.log('fetched');
         this.data = [...this.data, ...json];
-        this.addWords(this.numberOfWords);
+        this.addWords(this.numberOfWords, 50, this.board.size);
       });
   }
 }
