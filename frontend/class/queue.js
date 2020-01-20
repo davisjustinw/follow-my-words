@@ -2,6 +2,7 @@ class Queue {
   constructor(dom, board) {
     this.data = [];
     this.words = {};
+    this.verseWords = {};
     this.dom = dom;
     this.numberOfWords = 2;
     this.board = board;
@@ -9,6 +10,16 @@ class Queue {
 
   get length() {
     return this.data.length;
+  }
+
+  moveWordToVerse(word) {
+    this.verseWords[word.id] = word;
+    delete this.words[word.id];
+  }
+
+  moveWordToQueue(word) {
+    this.words[word.id] = word;
+    delete this.verseWords[word.id];
   }
 
   addWords(count, offset, size) {

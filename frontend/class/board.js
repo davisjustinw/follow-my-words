@@ -40,6 +40,7 @@ class Board {
     window.addEventListener("resize", e => {
       this.resetPosition = true;
     }, false);
+
     // word queue listener
     this.dom.queue.addEventListener('click', e => {
       e.stopPropagation();
@@ -79,6 +80,7 @@ class Board {
     console.log(`addWord: ${word.id}`);
     this.line.count -= word.syllable_count;
     this.dom.line.appendChild(word.element);
+    this.queue.moveWordToVerse(word);
     this.dom.lineCounter.innerText = `${this.line.count}: `
     console.log(`added to line.`);
   }
