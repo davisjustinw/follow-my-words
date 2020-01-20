@@ -1,6 +1,10 @@
+html {
+  background-color: hsl(230, 15%, 15%);
+}
+
 #gameboard {
     position: absolute;
     left: 0px;
     top: 0px;
     display: none;
-  }
+}

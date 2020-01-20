@@ -36,6 +36,10 @@ class Board {
     this.resetPosition = false;
 
     // event listeners
+    //resize listener
+    window.addEventListener("resize", e => {
+      this.resetPosition = true;
+    }, false);
     // word queue listener
     this.dom.queue.addEventListener('click', e => {
       e.stopPropagation();
@@ -146,8 +150,21 @@ class Board {
 
   moveWords() {
     for (const word in this.queue.words) {
-      console.log('moveWords')
       this.queue.words[word].update(this.size);
+    }
+
+    if (this.resetPosition) {
+
+      this.size = {
+        height: document.documentElement.clientHeight,
+        width: document.documentElement.clientWidth
+      };
+      console.log(`reset ${this.size.width}, ${this.size.height}`);
+      for (const word in this.queue.words) {
+        this.queue.words[word].update(this.size);
+      }
+
+      this.resetPosition = false;
     }
 
     requestAnimationFrame(this.moveWords.bind(this));

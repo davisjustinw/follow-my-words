@@ -3,7 +3,7 @@ class Queue {
     this.data = [];
     this.words = {};
     this.dom = dom;
-    this.numberOfWords = 20;
+    this.numberOfWords = 2;
     this.board = board;
   }
 

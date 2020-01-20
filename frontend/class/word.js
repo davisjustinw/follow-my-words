@@ -26,11 +26,11 @@ class Word {
 
     // initial opacity
     // might need to do this with setAttribute
-    this.element.style.opacity = (.1 + Math.random()) / 3;
+    this.element.style.opacity = (.9 + Math.random()) / 3;
   }
 
   update(boardSize) {
-    console.log(`boardSize: ${boardSize}`);
+    //console.log(`boardSize: ${boardSize.width}, ${boardSize.height}`);
     // using some trigonometry to determine our x and y position
     this.counter += this.speed / 5000;
     this.position.x += this.sign * this.speed * Math.cos(this.counter) / 40;
