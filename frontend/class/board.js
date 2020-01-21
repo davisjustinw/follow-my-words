@@ -140,7 +140,10 @@ class Board {
 
   destroyAndReplaceWord(word) {
     this.queue.dropWordFromQueue(word);
-    this.queue.addWords(1, 50, this.client);
+
+    if(this.queue.spaceInWords()) {
+      this.queue.addWords(1, 50, this.client);
+    }
   }
 
   // Listeners

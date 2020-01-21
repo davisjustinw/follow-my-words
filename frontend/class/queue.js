@@ -12,6 +12,16 @@ class Queue {
     return this.data.length;
   }
 
+  spaceInWords() {
+    if(Object.keys(this.words).length < this.maxWords){
+      console.log(`space in words ${Object.keys(this.words).length}: ${this.maxWords}`);
+      return true;
+    } else {
+      console.log(`no space in words ${Object.keys(this.words).length}: ${this.maxWords}`);
+      return false;
+    }
+  }
+
   moveWordToVerse(word) {
     this.verseWords[word.id] = word;
     this.board.dom.line.insertBefore(word.element, this.board.dom.lineCounter);
@@ -30,8 +40,6 @@ class Queue {
   }
 
   addWords(count) {
-    let wordsCount = Object.keys(this.words).length;
-    console.log(wordsCount);
     for(let i = 0; i < count; i++){
       let random = Math.floor(Math.random() * this.data.length);
 
