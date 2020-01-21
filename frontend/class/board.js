@@ -3,7 +3,6 @@ class Board {
     // Stanza structure legend
     this.legend = [
       { count: 5, eos: false },
-      { count: 7, eos: false },
       { count: 5, eos: true },
       { count: 7, eos: false },
       { count: 7, eos: true },
@@ -11,7 +10,7 @@ class Board {
 
     // initialize line values
     this.line = { index: 0, ...this.legend[0] };
-
+    console.log(this.line);
     // Set DOM Nodes
     this.dom = {
       board: document.querySelector('#gameboard'),
@@ -32,7 +31,7 @@ class Board {
       height: document.documentElement.clientHeight,
       width: document.documentElement.clientWidth
     };
-    console.log(this.client);
+    //console.log(this.client);
 
     //event listeners
     this.setResizeListener();
@@ -50,7 +49,7 @@ class Board {
   // Add word to current line
   checkAndAddWord(word) {
     let check = Math.sign(this.line.count - word.syllable_count);
-    console.log(`checking: ${this.line.count} - ${word.syllable_count}`);
+    //console.log(`checking: ${this.line.count} - ${word.syllable_count}`);
     return {
       '1': this.addWord,
       '0': this.addWordNewLine,
@@ -60,13 +59,13 @@ class Board {
   }
 
   addWord(word) {
-    console.log(`addWord: ${word.id}`);
+    //console.log(`addWord: ${word.id}`);
     this.line.count -= word.syllable_count;
     this.dom.line.insertBefore(word.element, this.dom.lineCounter);
     this.queue.moveWordToVerse(word);
     this.dom.lineCounter.innerText = this.line.count;
     word.element.className = 'sakura inStanza';
-    console.log(`added to line.`);
+    //console.log(`added to line.`);
   }
 
   addWordNewLine(word) {
@@ -74,6 +73,7 @@ class Board {
 
     this.queue.addWords(this.legend[this.line.index].count, 50, this.client);
 
+    // clear the counter
     this.dom.line.removeChild(this.dom.lineCounter);
     this.checkSaveStanza();
     this.dropLineListener();
@@ -86,12 +86,14 @@ class Board {
     this.setLineListener();
 
     let newIndex;
+
     if(this.line.index != this.legend.length - 1) {
       newIndex = this.line.index + 1;
     } else {
       newIndex = 0;
     }
-    this.line = { index: newIndex, ...this.legend[newIndex]}
+    this.line = { index: newIndex, ...this.legend[newIndex]};
+
     this.dom.lineCounter.innerText = this.line.count;
     this.dom.lineCounter.className = 'sakura inStanza';
   }
@@ -104,20 +106,28 @@ class Board {
     console.log('checkStanza');
 
     if(this.line.eos) {
-
-      let children = this.dom.stanza.childNodes;
-      this.dom.saved.append(...children);
+      let oldChildren = [].slice.call(this.dom.saved.children);
+      console.log('remove from saved');
+      console.log(oldChildren);
+      for(let child of oldChildren) {
+        console.log(child);
+        this.dom.saved.removeChild(child);
+      }
+      console.log(this.dom.saved);
+      let newChildren = [].slice.call(this.dom.stanza.children);
+      console.log(newChildren);
+      this.dom.saved.append(...newChildren);
     }
   }
 
   saveStanza() {
-    console.log(`saveStanza`);
-    console.log(this.dom.saved);
+    //console.log(`saveStanza`);
+    //console.log(this.dom.saved);
   }
 
   dropWord(word) {
-    console.log(`addWordToQueueNode: ${word.id}`);
-    console.log(this.dom.queue);
+    //console.log(`addWordToQueueNode: ${word.id}`);
+    //console.log(this.dom.queue);
 
     this.dom.queue.appendChild(word.element);
     this.queue.moveWordToQueue(word);
@@ -125,7 +135,7 @@ class Board {
     this.dom.lineCounter.innerText = this.line.count;
     word.element.className = 'sakura';
 
-    console.log(`added to queue.`)
+    //console.log(`added to queue.`)
   }
 
   destroyAndReplaceWord(word) {
@@ -136,21 +146,21 @@ class Board {
 
   // Listeners
   setLineListener() {
-    console.log(`setLineListener`);
+    //console.log(`setLineListener`);
 
     this.dom.line.addEventListener('click', e => {
         e.stopPropagation();
         //find word in list
-        console.log('line word clicked');
+        //console.log('line word clicked');
         let dropped = this.queue.findVerseWord(e.target.id);
-        console.log(`dropped: ${dropped.id}`);
+        //console.log(`dropped: ${dropped.id}`);
         //remove node
         dropped && this.dropWord(dropped);
     }, true);
   }
 
   dropLineListener() {
-    console.log('drop line listener');
+    //console.log('drop line listener');
     this.dom.line.removeEventListener('click', this.lineListener,true);
   }
 
@@ -164,7 +174,7 @@ class Board {
   setQueueListener() {
     this.dom.queue.addEventListener('click', e => {
       e.stopPropagation();
-      console.log(`word in queue clicked: ${e.target.id}`)
+      //console.log(`word in queue clicked: ${e.target.id}`)
       //console.log(this.dom.line);
       let clickedWord = this.queue.findWord(e.target.id);
 

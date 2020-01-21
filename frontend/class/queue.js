@@ -59,11 +59,11 @@ class Queue {
   }
   //API Call
   fetchData() {
-    console.log('fetching words')
+    //console.log('fetching words')
     fetch('http://127.0.0.1:3000/books/1/words')
       .then(response => response.json())
       .then(json => {
-        console.log('fetched');
+        //console.log('fetched');
         this.data = [...this.data, ...json];
         this.addWords(this.numberOfWords);
       });
