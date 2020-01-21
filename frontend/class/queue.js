@@ -4,7 +4,7 @@ class Queue {
     this.words = {};
     this.verseWords = {};
     this.dom = board.dom.queue;
-    this.numberOfWords = 10;
+    this.maxWords = 5;
     this.board = board;
   }
 
@@ -14,20 +14,24 @@ class Queue {
 
   moveWordToVerse(word) {
     this.verseWords[word.id] = word;
+    this.board.dom.line.insertBefore(word.element, this.board.dom.lineCounter);
     delete this.words[word.id];
   }
 
   moveWordToQueue(word) {
     this.words[word.id] = word;
+    this.board.dom.queue.appendChild(word.element);
     delete this.verseWords[word.id];
   }
 
   dropWordFromQueue(word) {
+    this.board.dom.queue.removeChild(word.element);
     delete this.words[word.id];
   }
 
   addWords(count) {
-
+    let wordsCount = Object.keys(this.words).length;
+    console.log(wordsCount);
     for(let i = 0; i < count; i++){
       let random = Math.floor(Math.random() * this.data.length);
 
@@ -65,7 +69,7 @@ class Queue {
       .then(json => {
         //console.log('fetched');
         this.data = [...this.data, ...json];
-        this.addWords(this.numberOfWords);
+        this.addWords(this.maxWords);
       });
   }
 }

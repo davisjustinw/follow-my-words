@@ -24,7 +24,6 @@ class Board {
     this.dom.lineCounter.innerText = this.line.count;
     this.dom.lineCounter.className = 'sakura inStanza';
 
-
     //browser dimensions;
     this.client = {
       offset: 50,
@@ -61,17 +60,18 @@ class Board {
   addWord(word) {
     //console.log(`addWord: ${word.id}`);
     this.line.count -= word.syllable_count;
-    this.dom.line.insertBefore(word.element, this.dom.lineCounter);
+
     this.queue.moveWordToVerse(word);
     this.dom.lineCounter.innerText = this.line.count;
     word.element.className = 'sakura inStanza';
+    this.queue.addWords(1, 50, this.client);
     //console.log(`added to line.`);
   }
 
   addWordNewLine(word) {
     this.addWord(word);
 
-    this.queue.addWords(this.legend[this.line.index].count, 50, this.client);
+    //this.queue.addWords(this.legend[this.line.index].count, 50, this.client);
 
     // clear the counter
     this.dom.line.removeChild(this.dom.lineCounter);
@@ -129,7 +129,7 @@ class Board {
     //console.log(`addWordToQueueNode: ${word.id}`);
     //console.log(this.dom.queue);
 
-    this.dom.queue.appendChild(word.element);
+
     this.queue.moveWordToQueue(word);
     this.line.count += word.syllable_count;
     this.dom.lineCounter.innerText = this.line.count;
@@ -139,7 +139,6 @@ class Board {
   }
 
   destroyAndReplaceWord(word) {
-    this.dom.queue.removeChild(word.element);
     this.queue.dropWordFromQueue(word);
     this.queue.addWords(1, 50, this.client);
   }
