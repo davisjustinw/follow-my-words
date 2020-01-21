@@ -37,7 +37,7 @@ class Queue {
       let word = new Word(this.data[random], this.board);
 
       this.words[word.id] = word;
-      this.dom.appendChild(word.element);
+      //this.dom.appendChild(word.element);
 
       if(this.data[random].count > 0) {
         this.data[random].count = this.data[random].count - 1;

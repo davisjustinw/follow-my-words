@@ -70,13 +70,9 @@ class Board {
   }
 
   addWordNewLine(word) {
-    console.log('add and complete');
     this.addWord(word);
 
-    console.log(`before addWords: ${this.client}`)
     this.queue.addWords(this.legend[this.line.index].count, 50, this.client);
-
-    console.log('completed line');
 
     this.dom.line.removeChild(this.dom.lineCounter);
     this.checkSaveStanza();
@@ -106,7 +102,6 @@ class Board {
 
   checkSaveStanza() {
     console.log('checkStanza');
-    console.log(`end of stanza: ${this.line.eos}`)
 
     if(this.line.eos) {
       let children = this.dom.stanza.childNodes;
@@ -189,7 +184,7 @@ class Board {
         height: document.documentElement.clientHeight,
         width: document.documentElement.clientWidth
       };
-      console.log(`reset ${this.client.width}, ${this.client.height}`);
+
       for (const word in this.queue.words) {
         this.queue.words[word].update();
       }

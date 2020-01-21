@@ -1,8 +1,6 @@
 class Word {
   constructor(obj, board) { //when do I call this? with offset, size
     // metadata
-    console.log("constructor");
-    console.log(board);
     this.id = `${obj.id}-${obj.count}`;
     this.text = obj.text;
     this.syllable_count = obj.syllable_count;
@@ -18,19 +16,20 @@ class Word {
     // position
     this.speed = 5 + Math.random() * 40;
 
-    this.position = {x: null, y: null};
+    this.position = {};
 
-    console.log(`before setPosition. offset ${this.board.client.offset}`);
     this.setPosition();
     this.scale = 1;
     console.log(`${this.id}: start position ${this.position.x}, ${this.position.y}`);
     // motion
     this.counter = 0;
     this.sign = Math.random() < 0.5 ? 1 : -1;
-
+    this.setTransform();
     // initial opacity
     // might need to do this with setAttribute
     this.element.style.opacity = (.9 + Math.random()) / 3;
+
+    this.board.dom.queue.appendChild(this.element);
   }
 
   update() {
@@ -64,7 +63,7 @@ class Word {
     this.position.x = this.calculatePosition(this.board.client.width);
     //let calculated = this.calculatePosition(this.board.client.height);
     //console.log(`calculated: ${calculated}`)
-    this.position.y = 1;
+    this.position.y = -50;
     //this.position.y = 0;
   }
 
