@@ -10,7 +10,7 @@ class Board {
 
     // initialize line values
     this.line = { index: 0, ...this.legend[0] };
-    console.log(this.line);
+    //console.log(this.line);
     // Set DOM Nodes
     this.dom = {
       board: document.querySelector('#gameboard'),

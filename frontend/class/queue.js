@@ -14,10 +14,10 @@ class Queue {
 
   spaceInWords() {
     if(Object.keys(this.words).length < this.maxWords){
-      console.log(`space in words ${Object.keys(this.words).length}: ${this.maxWords}`);
+      //console.log(`space in words ${Object.keys(this.words).length}: ${this.maxWords}`);
       return true;
     } else {
-      console.log(`no space in words ${Object.keys(this.words).length}: ${this.maxWords}`);
+      //console.log(`no space in words ${Object.keys(this.words).length}: ${this.maxWords}`);
       return false;
     }
   }
