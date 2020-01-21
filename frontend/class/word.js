@@ -1,6 +1,8 @@
 class Word {
   constructor(obj, board) { //when do I call this? with offset, size
     // metadata
+    console.log("constructor");
+    console.log(board);
     this.id = `${obj.id}-${obj.count}`;
     this.text = obj.text;
     this.syllable_count = obj.syllable_count;
@@ -31,7 +33,7 @@ class Word {
     this.element.style.opacity = (.9 + Math.random()) / 3;
   }
 
-  update(boardSize) {
+  update() {
     //console.log(`boardSize: ${boardSize.width}, ${boardSize.height}`);
     // using some trigonometry to determine our x and y position
     this.counter += this.speed / 5000;
@@ -47,10 +49,11 @@ class Word {
       this.element
     );
 
-    // if word drops below browser window, return to top
+    // if word drops below browser window, destroy and replace
     if (this.position.y > this.board.client.height) {
       console.log(`destroy: ${this.text}`);
-      this.position.y = -50;
+      this.board.destroyAndReplaceWord(this);
+      //this.position.y = -50;
     }
   }
 
@@ -59,7 +62,10 @@ class Word {
   }
   setPosition() {
     this.position.x = this.calculatePosition(this.board.client.width);
-    this.position.y = this.calculatePosition(this.board.client.height);
+    //let calculated = this.calculatePosition(this.board.client.height);
+    //console.log(`calculated: ${calculated}`)
+    this.position.y = 1;
+    //this.position.y = 0;
   }
 
   setTransform() {

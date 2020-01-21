@@ -32,6 +32,7 @@ class Board {
       height: document.documentElement.clientHeight,
       width: document.documentElement.clientWidth
     };
+    console.log(this.client);
 
     //event listeners
     this.setResizeListener();
@@ -131,6 +132,13 @@ class Board {
     console.log(`added to queue.`)
   }
 
+  destroyAndReplaceWord(word) {
+    this.dom.queue.removeChild(word.element);
+    this.queue.dropWordFromQueue(word);
+    this.queue.addWords(1, 50, this.client);
+  }
+
+  // Listeners
   setLineListener() {
     console.log(`setLineListener`);
 
@@ -177,12 +185,13 @@ class Board {
 
     if (this.resetPosition) {
       this.client = {
+        offset: 50,
         height: document.documentElement.clientHeight,
         width: document.documentElement.clientWidth
       };
       console.log(`reset ${this.client.width}, ${this.client.height}`);
       for (const word in this.queue.words) {
-        this.queue.words[word].update(this.client);
+        this.queue.words[word].update();
       }
 
       this.resetPosition = false;

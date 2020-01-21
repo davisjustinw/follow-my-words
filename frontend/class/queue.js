@@ -22,12 +22,18 @@ class Queue {
     delete this.verseWords[word.id];
   }
 
+  dropWordFromQueue(word) {
+    delete this.words[word.id];
+  }
+
   addWords(count) {
 
     for(let i = 0; i < count; i++){
       let random = Math.floor(Math.random() * this.data.length);
 
       // need offset and size
+      console.log("addWOrds");
+      //console.log(this.board);
       let word = new Word(this.data[random], this.board);
 
       this.words[word.id] = word;
