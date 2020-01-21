@@ -5,6 +5,7 @@ class Word {
     this.text = obj.text;
     this.syllable_count = obj.syllable_count;
     this.board = board;
+    this.queue = board.queue;
 
     // dom variables
     this.element = document.createElement('span');

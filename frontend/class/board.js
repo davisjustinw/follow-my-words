@@ -33,25 +33,9 @@ class Board {
       width: document.documentElement.clientWidth
     };
 
-
-    //resize listener
-    window.addEventListener("resize", e => {
-      this.resetPosition = true;
-    }, false);
-    this.resetPosition = false;
-
-    // word queue listener
-    this.dom.queue.addEventListener('click', e => {
-      e.stopPropagation();
-      console.log(`word in queue clicked: ${e.target.id}`)
-      //console.log(this.dom.line);
-      let clickedWord = this.queue.findWord(e.target.id);
-
-      //the target wasn't always legit this checks for that
-      clickedWord && this.checkAndAddWord(clickedWord);
-    }, true);
-
-    // set current line listener
+    //event listeners
+    this.setResizeListener();
+    this.setQueueListener();
     this.setLineListener();
 
     // build word hash
@@ -147,26 +131,42 @@ class Board {
     console.log(`added to queue.`)
   }
 
-  lineListener = e => {
-      e.stopPropagation();
-      //find word in list
-      console.log('line word clicked');
-      let dropped = this.queue.findVerseWord(e.target.id);
-      console.log(`dropped: ${dropped.id}`);
-      //remove node
-      dropped && this.dropWord(dropped);
-  }
-
-  // setLineListener gives lexical scope for the event listener to class elements
-  // and allows line to shift
   setLineListener() {
     console.log(`setLineListener`);
-    this.dom.line.addEventListener('click', this.lineListener, true);
+
+    this.dom.line.addEventListener('click', e => {
+        e.stopPropagation();
+        //find word in list
+        console.log('line word clicked');
+        let dropped = this.queue.findVerseWord(e.target.id);
+        console.log(`dropped: ${dropped.id}`);
+        //remove node
+        dropped && this.dropWord(dropped);
+    }, true);
   }
 
   dropLineListener() {
     console.log('drop line listener');
     this.dom.line.removeEventListener('click', this.lineListener,true);
+  }
+
+  setResizeListener() {
+    window.addEventListener("resize", e => {
+      this.resetPosition = true;
+    }, false);
+    this.resetPosition = false;
+  }
+
+  setQueueListener() {
+    this.dom.queue.addEventListener('click', e => {
+      e.stopPropagation();
+      console.log(`word in queue clicked: ${e.target.id}`)
+      //console.log(this.dom.line);
+      let clickedWord = this.queue.findWord(e.target.id);
+
+      //the target wasn't always legit this checks for that
+      clickedWord && this.checkAndAddWord(clickedWord);
+    }, true);
   }
 
   // move words animates all word in queue.words object
