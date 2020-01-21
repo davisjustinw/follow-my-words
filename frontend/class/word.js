@@ -20,7 +20,7 @@ class Word {
 
     this.setPosition();
     this.scale = 1;
-    console.log(`${this.id}: start position ${this.position.x}, ${this.position.y}`);
+    //console.log(`${this.id}: start position ${this.position.x}, ${this.position.y}`);
     // motion
     this.counter = 0;
     this.sign = Math.random() < 0.5 ? 1 : -1;
@@ -50,7 +50,7 @@ class Word {
 
     // if word drops below browser window, destroy and replace
     if (this.position.y > this.board.client.height) {
-      console.log(`destroy: ${this.text}`);
+      //console.log(`destroy: ${this.text}`);
       this.board.destroyAndReplaceWord(this);
       //this.position.y = -50;
     }

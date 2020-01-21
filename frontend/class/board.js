@@ -86,7 +86,7 @@ class Board {
     this.setLineListener();
 
     let newIndex;
-    if(this.line.index != this.legend.length) {
+    if(this.line.index != this.legend.length - 1) {
       newIndex = this.line.index + 1;
     } else {
       newIndex = 0;
@@ -104,6 +104,7 @@ class Board {
     console.log('checkStanza');
 
     if(this.line.eos) {
+
       let children = this.dom.stanza.childNodes;
       this.dom.saved.append(...children);
     }

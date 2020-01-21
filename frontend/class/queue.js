@@ -32,7 +32,7 @@ class Queue {
       let random = Math.floor(Math.random() * this.data.length);
 
       // need offset and size
-      console.log("addWOrds");
+      //console.log("addWOrds");
       //console.log(this.board);
       let word = new Word(this.data[random], this.board);
 
@@ -49,12 +49,12 @@ class Queue {
   }
 
   findWord(id) {
-    console.log(`findWord: ${id}`);
+    //console.log(`findWord: ${id}`);
     return this.words[id];
   }
 
   findVerseWord(id) {
-    console.log(`findVerseWord: ${id}`);
+    //console.log(`findVerseWord: ${id}`);
     return this.verseWords[id];
   }
   //API Call
