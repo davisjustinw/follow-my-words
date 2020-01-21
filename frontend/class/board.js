@@ -1,6 +1,6 @@
 class Board {
   constructor() {
-    // Stanza structure
+    // Stanza structure legend
     this.legend = [
       { count: 5, eos: false },
       { count: 7, eos: false },
@@ -9,9 +9,10 @@ class Board {
       { count: 7, eos: true },
     ];
 
+    // initialize line values
     this.line = { index: 0, ...this.legend[0] };
 
-    // DOM Nodes
+    // Set DOM Nodes
     this.dom = {
       board: document.querySelector('#gameboard'),
       queue: document.querySelector('#words ul'),
@@ -24,23 +25,20 @@ class Board {
     this.dom.lineCounter.innerText = this.line.count;
     this.dom.lineCounter.className = 'sakura inStanza';
 
-    // could be done in css but useful to make accessible?
-    this.dom.board.style.display = "block";
 
     //browser dimensions;
-    this.size = {
+    this.client = {
+      offset: 50,
       height: document.documentElement.clientHeight,
       width: document.documentElement.clientWidth
     };
 
-    //for browser size reset;
-    this.resetPosition = false;
 
-    // event listeners
     //resize listener
     window.addEventListener("resize", e => {
       this.resetPosition = true;
     }, false);
+    this.resetPosition = false;
 
     // word queue listener
     this.dom.queue.addEventListener('click', e => {
@@ -53,15 +51,18 @@ class Board {
       clickedWord && this.checkAndAddWord(clickedWord);
     }, true);
 
-    // current line listener
+    // set current line listener
     this.setLineListener();
 
     // build word hash
-    this.queue = new Queue(this.dom.queue, this);
+    this.queue = new Queue(this);
     this.queue.fetchData();
 
   }// END constructor
 
+  // METHODS
+
+  // Add word to current line
   checkAndAddWord(word) {
     let check = Math.sign(this.line.count - word.syllable_count);
     console.log(`checking: ${this.line.count} - ${word.syllable_count}`);
@@ -71,10 +72,6 @@ class Board {
       '-1': this.reject
     }[check].bind(this)(word);
     //bind here passes the class context to the lookup object
-  }
-
-  reject() {
-    console.log('rejected');
   }
 
   addWord(word) {
@@ -90,14 +87,15 @@ class Board {
   addWordNewLine(word) {
     console.log('add and complete');
     this.addWord(word);
-    console.log(`before addWords: ${this.size}`)
-    this.queue.addWords(this.legend[this.line.index].count, 50, this.size);
+
+    console.log(`before addWords: ${this.client}`)
+    this.queue.addWords(this.legend[this.line.index].count, 50, this.client);
+
     console.log('completed line');
 
     this.dom.line.removeChild(this.dom.lineCounter);
     this.checkSaveStanza();
     this.dropLineListener();
-
 
     this.dom.line = document.createElement('p');
     this.dom.lineCounter = document.createElement('span')
@@ -117,6 +115,10 @@ class Board {
     this.dom.lineCounter.className = 'sakura inStanza';
   }
 
+  reject() {
+    console.log('rejected');
+  }
+
   checkSaveStanza() {
     console.log('checkStanza');
     console.log(`end of stanza: ${this.line.eos}`)
@@ -127,14 +129,21 @@ class Board {
     }
   }
 
+  saveStanza() {
+    console.log(`saveStanza`);
+    console.log(this.dom.saved);
+  }
+
   dropWord(word) {
     console.log(`addWordToQueueNode: ${word.id}`);
     console.log(this.dom.queue);
+
     this.dom.queue.appendChild(word.element);
     this.queue.moveWordToQueue(word);
     this.line.count += word.syllable_count;
     this.dom.lineCounter.innerText = this.line.count;
     word.element.className = 'sakura';
+
     console.log(`added to queue.`)
   }
 
@@ -152,7 +161,7 @@ class Board {
   // and allows line to shift
   setLineListener() {
     console.log(`setLineListener`);
-    this.dom.line.addEventListener('click', this.lineListener,true);
+    this.dom.line.addEventListener('click', this.lineListener, true);
   }
 
   dropLineListener() {
@@ -160,19 +169,20 @@ class Board {
     this.dom.line.removeEventListener('click', this.lineListener,true);
   }
 
+  // move words animates all word in queue.words object
   moveWords() {
     for (const word in this.queue.words) {
-      this.queue.words[word].update(this.size);
+      this.queue.words[word].update(this.client);
     }
 
     if (this.resetPosition) {
-      this.size = {
+      this.client = {
         height: document.documentElement.clientHeight,
         width: document.documentElement.clientWidth
       };
-      console.log(`reset ${this.size.width}, ${this.size.height}`);
+      console.log(`reset ${this.client.width}, ${this.client.height}`);
       for (const word in this.queue.words) {
-        this.queue.words[word].update(this.size);
+        this.queue.words[word].update(this.client);
       }
 
       this.resetPosition = false;

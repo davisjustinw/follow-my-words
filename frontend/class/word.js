@@ -1,9 +1,10 @@
 class Word {
-  constructor(obj, offset, size) { //when do I call this? with offset, size
+  constructor(obj, board) { //when do I call this? with offset, size
     // metadata
     this.id = `${obj.id}-${obj.count}`;
     this.text = obj.text;
     this.syllable_count = obj.syllable_count;
+    this.board = board;
 
     // dom variables
     this.element = document.createElement('span');
@@ -16,8 +17,8 @@ class Word {
 
     this.position = {x: null, y: null};
 
-    console.log(`before setPosition. offset ${offset}, size ${size}`);
-    this.setPosition(offset, size);
+    console.log(`before setPosition. offset ${this.board.client.offset}`);
+    this.setPosition();
     this.scale = 1;
     console.log(`${this.id}: start position ${this.position.x}, ${this.position.y}`);
     // motion
@@ -46,19 +47,18 @@ class Word {
     );
 
     // if word drops below browser window, return to top
-    if (this.position.y > boardSize.height) {
+    if (this.position.y > this.board.client.height) {
+      console.log(`destroy: ${this.text}`);
       this.position.y = -50;
     }
   }
 
-  calculatePosition(offset, size) {
-    return Math.round(-1 * offset + Math.random() * (size + 2 * offset));
+  calculatePosition(size) {
+    return Math.round(-1 * this.board.client.offset + Math.random() * (size + 2 * this.board.client.offset));
   }
-  setPosition(offset, size) {
-    console.log(`setPosition. offset ${offset}, size ${size}`);
-
-    this.position.x = this.calculatePosition(offset, size.width);
-    this.position.y = this.calculatePosition(offset, size.height);
+  setPosition() {
+    this.position.x = this.calculatePosition(this.board.client.width);
+    this.position.y = this.calculatePosition(this.board.client.height);
   }
 
   setTransform() {
