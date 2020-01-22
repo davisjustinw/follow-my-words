@@ -18,6 +18,7 @@ class Board {
       queue: document.querySelector('#words ul'),
       saved: document.querySelector('#saved'),
       stanza: document.querySelector('#stanza'),
+      stanzas: document.querySelector('#stanzas'),
       line: document.querySelector('#stanza p'),
       lineCounter: document.querySelector('#stanza p span')
     };
@@ -44,6 +45,7 @@ class Board {
     this.queue.fetchData();
 
     this.paused = false;
+    
 
   }// END constructor
 
@@ -195,6 +197,16 @@ class Board {
 
   togglePause() {
     this.paused = !this.paused;
+    this.dom.queue.hidden = !this.dom.queue.hidden
+    this.dom.stanzas.hidden = !this.dom.stanzas.hidden
+  }
+
+  clearTimer() {
+    clearInterval(this.timer);
+  }
+
+  playBack = function() {
+    console.log('playing back')
   }
 
   // move words animates all word in queue.words object
@@ -203,6 +215,8 @@ class Board {
       for (const word in this.queue.words) {
         this.queue.words[word].update(this.client);
       }
+    } else if(this.paused && !this.timer) {
+      this.timer = setInterval(this.playBack, 5000);
     }
 
     this.checkForReset();
