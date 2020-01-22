@@ -132,9 +132,11 @@ class Board {
 
   // Listeners
   lineListener = e => {
-      e.stopPropagation();
+    e.stopPropagation();
+    if(!this.paused) {
       let dropped = this.queue.findVerseWord(e.target.id);
       dropped && this.dropWord(dropped);
+    }
   }
 
   setLineListener() {
@@ -165,10 +167,13 @@ class Board {
       e.stopPropagation();
       //console.log(`word in queue clicked: ${e.target.id}`)
       //console.log(this.dom.line);
-      let clickedWord = this.queue.findWord(e.target.id);
+      if(!this.paused) {
+        let clickedWord = this.queue.findWord(e.target.id);
 
-      //the target wasn't always legit this checks for that
-      clickedWord && this.checkAndAddWord(clickedWord);
+        //the target wasn't always legit this checks for that
+        clickedWord && this.checkAndAddWord(clickedWord);
+      }
+
     }, true);
   }
 
