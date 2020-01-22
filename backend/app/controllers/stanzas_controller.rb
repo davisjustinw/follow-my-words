@@ -1,7 +1,7 @@
 class StanzasController < ApplicationController
   def index
     stanzas = Stanza.all
-    render json: stanzas, only: [:id]
+    render json: stanzas, only: [:id], include: [:lines]
   end
 
   def show

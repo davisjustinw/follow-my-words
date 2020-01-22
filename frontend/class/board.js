@@ -43,7 +43,8 @@ class Board {
     // build word hash
     this.queue = new Queue(this);
     this.queue.fetchData();
-
+    this.fetchStanzas();
+    this.stanzas = [];
     this.paused = false;
 
 
@@ -52,6 +53,24 @@ class Board {
   // METHODS
 
   // Add word to current line
+  fetchStanzas() {
+    fetch(`${this.URL}/stanzas`)
+      .then(response => response.json())
+      .then(json => {
+        //console.log('fetched');
+        let stanzaData = json;
+        this.addStanzas(json);
+      });
+  }
+
+  addStanzas(data) {
+    for(let obj of data) {
+      this.stanzas.push(new Stanza(obj));
+    }
+
+    console.log(this.stanzas);
+  }
+
   checkAndAddWord(word) {
     let check = Math.sign(this.line.count - word.syllable_count);
 
@@ -167,15 +186,11 @@ class Board {
   setQueueListener() {
     this.dom.queue.addEventListener('click', e => {
       e.stopPropagation();
-      //console.log(`word in queue clicked: ${e.target.id}`)
-      //console.log(this.dom.line);
       if(!this.paused) {
         let clickedWord = this.queue.findWord(e.target.id);
-
-        //the target wasn't always legit this checks for that
+        //ensure a clean target
         clickedWord && this.checkAndAddWord(clickedWord);
       }
-
     }, true);
   }
 
