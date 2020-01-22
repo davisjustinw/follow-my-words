@@ -37,10 +37,13 @@ class Board {
     this.setResizeListener();
     this.setQueueListener();
     this.setLineListener();
+    this.setPauseListener();
 
     // build word hash
     this.queue = new Queue(this);
     this.queue.fetchData();
+
+    this.paused = false;
 
   }// END constructor
 
@@ -108,7 +111,7 @@ class Board {
 
       this.queue.clearSavedWords()
       this.queue.saveVerseWords()
-  
+
     }
   }
 
@@ -142,6 +145,14 @@ class Board {
     this.dom.line.removeEventListener('click', this.lineListener,true);
   }
 
+  setPauseListener() {
+    document.addEventListener('keydown', e => {
+      if(e.key == ' ') {
+        this.togglePause();
+      }
+    }, false);
+  }
+
   setResizeListener() {
     window.addEventListener("resize", e => {
       this.resetPosition = true;
@@ -161,12 +172,7 @@ class Board {
     }, true);
   }
 
-  // move words animates all word in queue.words object
-  moveWords() {
-    for (const word in this.queue.words) {
-      this.queue.words[word].update(this.client);
-    }
-
+  checkForReset() {
     if (this.resetPosition) {
       this.client = {
         offset: 50,
@@ -180,6 +186,21 @@ class Board {
 
       this.resetPosition = false;
     }
+  }
+
+  togglePause() {
+    this.paused = !this.paused;
+  }
+
+  // move words animates all word in queue.words object
+  moveWords() {
+    if(!this.paused) {
+      for (const word in this.queue.words) {
+        this.queue.words[word].update(this.client);
+      }
+    }
+
+    this.checkForReset();
 
     requestAnimationFrame(this.moveWords.bind(this));
   }
