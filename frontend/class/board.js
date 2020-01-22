@@ -45,7 +45,7 @@ class Board {
     this.queue.fetchData();
 
     this.paused = false;
-    
+
 
   }// END constructor
 
@@ -205,7 +205,7 @@ class Board {
     clearInterval(this.timer);
   }
 
-  playBack = function() {
+  playback = function() {
     console.log('playing back')
   }
 
@@ -216,7 +216,8 @@ class Board {
         this.queue.words[word].update(this.client);
       }
     } else if(this.paused && !this.timer) {
-      this.timer = setInterval(this.playBack, 5000);
+      this.playback();
+      this.timer = setInterval(this.playback, 5000);
     }
 
     this.checkForReset();

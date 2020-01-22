@@ -19,3 +19,26 @@ words.each do |word|
   puts "#{newWord.text}: #{newWord.count}"
   newWord.save
 end
+
+cannedStanzas = [
+  {
+    lines_attributes: [
+      {text: "spacebar to unpause"},
+      {text: "clicking words adds to stanza"},
+      {text: "complete lines to save"}
+    ]
+  },
+  {
+    lines_attributes: [
+      {text: "down the rabbit hole we go"},
+      {text: "relax what can we create"}
+    ]
+  },
+
+]
+
+cannedStanzas.each do |stanza|
+  puts 'adding stanza'
+  Stanza.create(stanza);
+  puts 'stanza successful'
+end
