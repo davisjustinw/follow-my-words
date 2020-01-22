@@ -3,7 +3,7 @@ class Queue {
     this.data = [];
     this.words = {};
     this.verseWords = {};
-    this.savedWords = {};
+    this.stanzaToSave = [];
     this.maxWords = 10;
     this.board = board;
   }
@@ -26,16 +26,59 @@ class Queue {
     let oldChildren = [].slice.call(this.board.dom.saved.children);
 
     for(let child of oldChildren) {
-      console.log(child);
+      this.buildLineToSave(child);
       this.board.dom.saved.removeChild(child);
     }
-    this.savedWords = {};
+    this.commitStanza();
+  }
+
+  commitStanza() {
+    if(this.stanzaToSave.length != 0) {
+      console.log('commit');
+      console.log(this.stanzaToSave);
+
+      let requestBody = JSON.stringify({
+        "stanza" : {
+          "lines_attributes" : this.stanzaToSave
+        }
+      });
+      console.log('fetch');
+      fetch( 'http://127.0.0.1:3000/stanzas', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: requestBody
+        })
+        .then( response => {
+          return response.json();
+        })
+        .then( object => {
+          console.log(object);
+        })
+        .catch( error => {
+          //document.body.innerHTML = error.message;
+          console.log(error.message);
+        })
+        
+      this.stanzaToSave = [];
+    }
+
+  }
+
+  buildLineToSave(element) {
+    let children = [].slice.call(element.children);
+    let line = '';
+    for(let child of children) {
+      line = `${line}${child.innerText} `;
+    }
+    this.stanzaToSave.push({ text: line.trim() });
   }
 
   saveVerseWords() {
     let newChildren = [].slice.call(this.board.dom.stanza.children);
     this.board.dom.saved.append(...newChildren);
-    this.savedWords = {...this.verseWords};
   }
 
   moveWordToVerse(word) {

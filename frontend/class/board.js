@@ -49,7 +49,7 @@ class Board {
   // Add word to current line
   checkAndAddWord(word) {
     let check = Math.sign(this.line.count - word.syllable_count);
-    //console.log(`checking: ${this.line.count} - ${word.syllable_count}`);
+
     return {
       '1': this.addWord,
       '0': this.addWordNewLine,
@@ -71,8 +71,6 @@ class Board {
 
   addWordNewLine(word) {
     this.addWord(word);
-
-    //this.queue.addWords(this.legend[this.line.index].count, 50, this.client);
 
     // clear the counter
     this.dom.line.removeChild(this.dom.lineCounter);
@@ -107,8 +105,10 @@ class Board {
     console.log('checkStanza');
     // end of stanza
     if(this.line.eos) {
+
       this.queue.clearSavedWords()
       this.queue.saveVerseWords()
+  
     }
   }
 
