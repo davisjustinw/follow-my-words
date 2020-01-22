@@ -3,8 +3,8 @@ class Queue {
     this.data = [];
     this.words = {};
     this.verseWords = {};
-    this.dom = board.dom.queue;
-    this.maxWords = 5;
+    this.savedWords = {};
+    this.maxWords = 10;
     this.board = board;
   }
 
@@ -20,6 +20,22 @@ class Queue {
       //console.log(`no space in words ${Object.keys(this.words).length}: ${this.maxWords}`);
       return false;
     }
+  }
+
+  clearSavedWords() {
+    let oldChildren = [].slice.call(this.board.dom.saved.children);
+
+    for(let child of oldChildren) {
+      console.log(child);
+      this.board.dom.saved.removeChild(child);
+    }
+    this.savedWords = {};
+  }
+
+  saveVerseWords() {
+    let newChildren = [].slice.call(this.board.dom.stanza.children);
+    this.board.dom.saved.append(...newChildren);
+    this.savedWords = {...this.verseWords};
   }
 
   moveWordToVerse(word) {
@@ -49,7 +65,7 @@ class Queue {
       let word = new Word(this.data[random], this.board);
 
       this.words[word.id] = word;
-      //this.dom.appendChild(word.element);
+
 
       if(this.data[random].count > 0) {
         this.data[random].count = this.data[random].count - 1;
@@ -72,7 +88,7 @@ class Queue {
   //API Call
   fetchData() {
     //console.log('fetching words')
-    fetch('http://127.0.0.1:3000/books/1/words')
+    fetch(`${this.board.URL}/books/1/words`)
       .then(response => response.json())
       .then(json => {
         //console.log('fetched');

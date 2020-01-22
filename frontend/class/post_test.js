@@ -36,7 +36,7 @@ function postTest() {
 
 function showTest(id) {
 
-  fetch( `http://127.0.0.1:3000/stanzas/${id}` )
+  fetch( `http://127.0.0.1:3000/stanzas` )
     .then( response => {
       return response.json();
     })

@@ -1,6 +1,7 @@
 class Board {
   constructor() {
     // Stanza structure legend
+    this.URL = 'http://127.0.0.1:3000'
     this.legend = [
       { count: 5, eos: false },
       { count: 5, eos: true },
@@ -75,8 +76,8 @@ class Board {
 
     // clear the counter
     this.dom.line.removeChild(this.dom.lineCounter);
-    this.checkSaveStanza();
     this.dropLineListener();
+    this.checkSaveStanza();
 
     this.dom.line = document.createElement('p');
     this.dom.lineCounter = document.createElement('span')
@@ -104,38 +105,18 @@ class Board {
 
   checkSaveStanza() {
     console.log('checkStanza');
-
+    // end of stanza
     if(this.line.eos) {
-      let oldChildren = [].slice.call(this.dom.saved.children);
-      console.log('remove from saved');
-      console.log(oldChildren);
-      for(let child of oldChildren) {
-        console.log(child);
-        this.dom.saved.removeChild(child);
-      }
-      console.log(this.dom.saved);
-      let newChildren = [].slice.call(this.dom.stanza.children);
-      console.log(newChildren);
-      this.dom.saved.append(...newChildren);
+      this.queue.clearSavedWords()
+      this.queue.saveVerseWords()
     }
   }
 
-  saveStanza() {
-    //console.log(`saveStanza`);
-    //console.log(this.dom.saved);
-  }
-
   dropWord(word) {
-    //console.log(`addWordToQueueNode: ${word.id}`);
-    //console.log(this.dom.queue);
-
-
     this.queue.moveWordToQueue(word);
     this.line.count += word.syllable_count;
     this.dom.lineCounter.innerText = this.line.count;
     word.element.className = 'sakura';
-
-    //console.log(`added to queue.`)
   }
 
   destroyAndReplaceWord(word) {
@@ -147,22 +128,17 @@ class Board {
   }
 
   // Listeners
-  setLineListener() {
-    //console.log(`setLineListener`);
+  lineListener = e => {
+      e.stopPropagation();
+      let dropped = this.queue.findVerseWord(e.target.id);
+      dropped && this.dropWord(dropped);
+  }
 
-    this.dom.line.addEventListener('click', e => {
-        e.stopPropagation();
-        //find word in list
-        //console.log('line word clicked');
-        let dropped = this.queue.findVerseWord(e.target.id);
-        //console.log(`dropped: ${dropped.id}`);
-        //remove node
-        dropped && this.dropWord(dropped);
-    }, true);
+  setLineListener() {
+    this.dom.line.addEventListener('click', this.lineListener, true);
   }
 
   dropLineListener() {
-    //console.log('drop line listener');
     this.dom.line.removeEventListener('click', this.lineListener,true);
   }
 
