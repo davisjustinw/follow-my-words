@@ -20,7 +20,9 @@ class Board {
       stanza: document.querySelector('#stanza'),
       stanzas: document.querySelector('#stanzas'),
       line: document.querySelector('#stanza p'),
-      lineCounter: document.querySelector('#stanza p span')
+      lineCounter: document.querySelector('#stanza p span'),
+      show: document.querySelector('#show'),
+      showStanza: document.querySelector('#show-stanza')
     };
 
     this.dom.lineCounter.innerText = this.line.count;
@@ -43,8 +45,9 @@ class Board {
     // build word hash
     this.queue = new Queue(this);
     this.queue.fetchData();
-    this.fetchStanzas();
     this.stanzas = [];
+    this.stanzaCounter = 0;
+    this.fetchStanzas();
     this.paused = false;
 
 
@@ -212,15 +215,36 @@ class Board {
 
   togglePause() {
     this.paused = !this.paused;
-    this.dom.queue.hidden = !this.dom.queue.hidden
-    this.dom.stanzas.hidden = !this.dom.stanzas.hidden
+    this.dom.queue.hidden = !this.dom.queue.hidden;
+    this.dom.stanzas.hidden = !this.dom.stanzas.hidden;
+    this.dom.show.hidden = !this.dom.show.hidden;
+    if(this.timer && !this.paused){
+      console.log('clearing');
+      this.clearTimer()
+    }
   }
 
   clearTimer() {
+    console.log('clearing');
     clearInterval(this.timer);
+    this.timer = null;
   }
 
   playback = function() {
+    console.log(this.dom.showStanza);
+    let oldChildren = [].slice.call(this.dom.showStanza.children);
+
+    for(let child of oldChildren) {
+      this.dom.showStanza.removeChild(child);
+    }
+    this.dom.showStanza.appendChild(
+      this.stanzas[this.stanzaCounter].getElement()
+    );
+
+    this.stanzaCounter++;
+    if(this.stanzaCounter == this.stanzas.length) {
+      this.stanzaCounter = 0;
+    }
     console.log('playing back')
   }
 
@@ -232,7 +256,7 @@ class Board {
       }
     } else if(this.paused && !this.timer) {
       this.playback();
-      this.timer = setInterval(this.playback, 5000);
+      this.timer = setInterval(this.playback.bind(this), 5000);
     }
 
     this.checkForReset();
