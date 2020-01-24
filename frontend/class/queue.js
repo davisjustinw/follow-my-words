@@ -4,7 +4,7 @@ class Queue {
     this.words = {};
     this.verseWords = {};
     this.stanzaToSave = [];
-    this.maxWords = 10;
+    this.maxWords = 14;
     this.board = board;
   }
 
@@ -61,7 +61,7 @@ class Queue {
           //document.body.innerHTML = error.message;
           console.log(error.message);
         })
-        
+
       this.stanzaToSave = [];
     }
 

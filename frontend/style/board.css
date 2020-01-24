@@ -1,19 +1,53 @@
-html {
-  background-color: hsl(230, 15%, 15%);
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 #gameboard {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    display: block;
+  background-color: hsl(230, 15%, 15%);
+  font-size: 32px;
+  color: hsl(330, 65%, 80%);
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#words {
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 
 #stanzas {
-  width: 100%;
+
+
+  /*position: absolute;
+  left: 100px;
+  top: 100px;*/
+}
+
+.sakura {
+  position: fixed;
+  z-index: 1000;
   font-size: 48px;
   color: hsl(330, 65%, 80%);
-  position: absolute;
-  left: 100px;
-  top: 100px;
+  padding: 10px;
+}
+
+.inStanza {
+  position: static;
+  display: inline;
+}
+
+header {
+  display: none;
+}
+
+footer {
+  display: none;
 }

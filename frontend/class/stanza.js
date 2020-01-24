@@ -7,10 +7,12 @@ class Stanza {
   getElement() {
     let stanza = document.createDocumentFragment();;
     for(let line of this.lines) {
-      let element = document.createElement('p');
-      element.innerText = line;
-      element.className = 'sakura';
-      stanza.appendChild(element);
+      let p = document.createElement('p');
+      let span = document.createElement('span');
+      span.className = 'sakura inStanza';
+      span.innerText = line;
+      p.appendChild(span)
+      stanza.appendChild(p);
     }
     return stanza;
   }

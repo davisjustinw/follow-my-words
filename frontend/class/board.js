@@ -4,6 +4,7 @@ class Board {
     this.URL = 'http://127.0.0.1:3000'
     this.legend = [
       { count: 5, eos: false },
+      { count: 7, eos: false },
       { count: 5, eos: true },
       { count: 7, eos: false },
       { count: 7, eos: true },
