@@ -23,15 +23,18 @@ html, body {
   top: 0px;
 }
 
+
+
 .sakura {
   position: fixed;
-  z-index: 1000;
+  z-index: 1;
   font-size: 48px;
   color: hsl(330, 65%, 80%);
   padding: 10px;
 }
 
 .inStanza {
+  z-index: 2;
   position: static;
   display: inline;
 }

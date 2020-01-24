@@ -249,7 +249,7 @@ class Board {
     console.log('playing back')
   }
 
-  // move words animates all word in queue.words object
+  // move words animates all words in queue.words object
   moveWords() {
     if(!this.paused) {
       for (const word in this.queue.words) {

@@ -83,13 +83,15 @@ class Queue {
 
   moveWordToVerse(word) {
     this.verseWords[word.id] = word;
-    //word.element.style.opacity = 100;
+    word.element.style.opacity = 100;
     this.board.dom.line.insertBefore(word.element, this.board.dom.lineCounter);
     delete this.words[word.id];
   }
 
   moveWordToQueue(word) {
     this.words[word.id] = word;
+    word.setOpacity();
+    word.setPosition();
     this.board.dom.queue.appendChild(word.element);
     delete this.verseWords[word.id];
   }

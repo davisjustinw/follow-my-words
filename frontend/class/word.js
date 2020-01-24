@@ -27,9 +27,12 @@ class Word {
     this.setTransform();
     // initial opacity
     // might need to do this with setAttribute
-    this.element.style.opacity = (.9 + Math.random()) / 3;
+    this.setOpacity();
 
     this.board.dom.queue.appendChild(this.element);
+  }
+  setOpacity() {
+    this.element.style.opacity = (.9 + Math.random()) / 3;
   }
 
   update() {
