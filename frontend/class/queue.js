@@ -83,6 +83,7 @@ class Queue {
 
   moveWordToVerse(word) {
     this.verseWords[word.id] = word;
+    //word.element.style.opacity = 100;
     this.board.dom.line.insertBefore(word.element, this.board.dom.lineCounter);
     delete this.words[word.id];
   }
@@ -102,13 +103,9 @@ class Queue {
     for(let i = 0; i < count; i++){
       let random = Math.floor(Math.random() * this.data.length);
 
-      // need offset and size
-      //console.log("addWOrds");
-      //console.log(this.board);
       let word = new Word(this.data[random], this.board);
 
       this.words[word.id] = word;
-
 
       if(this.data[random].count > 0) {
         this.data[random].count = this.data[random].count - 1;

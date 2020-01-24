@@ -23,14 +23,6 @@ html, body {
   top: 0px;
 }
 
-#stanzas {
-
-
-  /*position: absolute;
-  left: 100px;
-  top: 100px;*/
-}
-
 .sakura {
   position: fixed;
   z-index: 1000;
@@ -42,12 +34,4 @@ html, body {
 .inStanza {
   position: static;
   display: inline;
-}
-
-header {
-  display: none;
-}
-
-footer {
-  display: none;
 }
