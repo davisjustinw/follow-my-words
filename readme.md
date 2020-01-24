@@ -2,7 +2,9 @@
 Renga is an ancient Japanese poetic form that gave rise to Haiku.  Renga was a kind of game where each poet took turns writing a stanza.  An interesting paper on the subject can be found [here](https://www.uwosh.edu/facstaff/barnhill/244-japan/Renga.pdf) by David Landis Barnhill.  The themes of transience in the paper inspired images of words as cherry blossoms in a kind of game/relaxing pastime.
 
 > Old words sprout, then fade.
+
 > Renga plants an ancient seed.
+
 > Reflect, inspire, play.
 
 ## Setup
