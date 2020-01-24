@@ -56,6 +56,7 @@ class Queue {
         })
         .then( object => {
           console.log(object);
+          this.board.stanzas.push(new Stanza(object));
         })
         .catch( error => {
           //document.body.innerHTML = error.message;

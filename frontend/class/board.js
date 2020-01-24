@@ -133,10 +133,8 @@ class Board {
     console.log('checkStanza');
     // end of stanza
     if(this.line.eos) {
-
       this.queue.clearSavedWords()
       this.queue.saveVerseWords()
-
     }
   }
 
