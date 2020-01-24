@@ -255,7 +255,7 @@ class Board {
       }
     } else if(this.paused && !this.timer) {
       this.playback();
-      this.timer = setInterval(this.playback.bind(this), 5000);
+      this.timer = setInterval(this.playback.bind(this), 3000);
     }
 
     this.checkForReset();

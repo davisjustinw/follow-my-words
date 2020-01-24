@@ -1,45 +1,49 @@
 # Follow Me... Follow My Words
+Renga is an ancient Japanese poetic form that gave rise to Haiku.  Renga was a kind of game where each poet took turns writing a stanza.  An interesting paper on the subject can be found [here](https://www.uwosh.edu/facstaff/barnhill/244-japan/Renga.pdf) by David Landis Barnhill.  The themes of transience in the paper inspired images of words as cherry blossoms in a kind of game/relaxing pastime.
 
-Old words sprout, then fade.
+> Old words sprout, then fade.
+> Renga plants an ancient seed.
+> Reflect, inspire, play.
 
-Renga plants an ancient seed.
+## Setup
+As configured, this application requires PostgreSQL for its database.
 
-Reflect, inspire, play.
+[https://www.postgresql.org/download/](https://www.postgresql.org/download/)
+
+With PostgreSQL installed, clone or download the repo.
+
+In the console, install the repo and setup the PostgreSQL user.
+
+```
+$ bundle install
+$ psql
+create role fmw with createdb login password '<YOUR_PASSWORD>';
+\q
+```
+
+Create a .env file in the backend folder and add the following.
+
+```
+FMW_DATABASE_PASSWORD=<YOUR_PASSWORD>
+```
+The database config file sits in /backend/config/database.yml.
+
+Create, migrate then seed the database. The seed text, Alice's Adventures in Wonderland, sits in /backend/lib. Fire up the rails server.  Open /frontend/index.html in a browser to play the game.
 
 ## User Stories
 
 ### As a player ...
-* I see words breath in and out of view inspiring a sense of calm and inspiration
-   * I see words blossom into view, fade then fall.
-   * I see words float from the top down like leaves or blossoms
+* I see words float from the top down like leaves or blossoms, inspiring a sense of calm and inspiration
+* I see a number indicating how many syllables are left.
+* I see the last stanza set so I can make my verses flow.
+* Clicking one of the falling words places it in the verse.
+* Clicking a word makes it fall again.
+   * A released word can be clicked again before it disappears from view
+* Hitting space bar plays verses back
 
-* I see spaces for syllables on lines(575 or 77) showing me how this stanza should be structured.
-* I see the last stanza set and/or the first stanza of the current so I can know what I'm creating.
-* Clicking or touching one of the falling words places it in the next set of spaces.
-* Clicking or touching a word lets it fall.
-   * A released word can be touched again before it disappears from view
-* When the text ends the game ends.
-* Or when 100 or 36 stanzas are reached
-* When the game ends I can read my creation.
-
-## Structure
+## Syllable Structure
 
 (575 [77) {575] |77} /575| 77/
 
 ## Seed Text
 * [Alice In Wonderland](http://www.gutenberg.org/ebooks/11)
-* [Pride & Prejudice](https://www.gutenberg.org/ebooks/1342)
-* [Britain's Deadly Peril](https://www.gutenberg.org/ebooks/61040)
-
-## Movement Ideas
-See the space between the rain.
-* Inhale to view
-* Inhale to view with heartbeat
-* Falling leaves
-* Falling blossoms
-* Falling rain
-
-## Random Thoughts
-* Shikumi - System
-* Sukumi - Deadlock
-* Hana no Moto - under the blossoms

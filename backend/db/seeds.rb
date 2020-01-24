@@ -1,5 +1,5 @@
 
-file = File.open('./lib/Alice_short.txt')
+file = File.open('./lib/Alice.txt')
 data = file.read
 file.close
 #words = data.scan(/\w+/)
