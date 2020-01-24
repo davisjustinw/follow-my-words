@@ -251,7 +251,7 @@ class Board {
   moveWords() {
     if(!this.paused) {
       for (const word in this.queue.words) {
-        this.queue.words[word].update(this.client);
+        this.queue.words[word].update();
       }
     } else if(this.paused && !this.timer) {
       this.playback();
