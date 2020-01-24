@@ -2,7 +2,11 @@
 file = File.open('./lib/Alice_short.txt')
 data = file.read
 file.close
-words = data.scan(/\w+/)
+#words = data.scan(/\w+/)
+#words = data.scan(/\w+(')\w+/)
+#words = data.split(/[^'\w+]/)
+#words = data.scan(/\w+(')\w+|\w+/)
+words = data.scan(/[A-Za-z']+/)
 
 book = Book.create(
   title: "Alice's Adventures in Wonderland",
@@ -31,7 +35,7 @@ cannedStanzas = [
   {
     lines_attributes: [
       {text: "down the rabbit hole we go"},
-      {text: "relax what can we create"}
+      {text: "what can we create this day"}
     ]
   },
 
